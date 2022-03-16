@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Student;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +16,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('https://boroafterprom.com');
+});
+
+Route::get('/tickets', function () {
+    return view('tickets');
+});
+
+Route::get('/tickets/success', function (Request $request) {
+    $orderId = $request->get('orderId');
+
+    $student = Student::with('guest')->where('id', 'like', $orderId.'-%')->firstOrFail();
+
+
+    return view('tickets.success', ['student' => $student]);
+})->name('tickets.success');
+
+Route::get('/tickets/pickup', function () {
+    return view('ticket_pickup');
 });
