@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Student;
+use Illuminate\Support\ItemNotFoundException;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Psr\Log\NullLogger;
@@ -24,7 +25,11 @@ class TicketPickup extends Component
 
     public function mount(Student $student)
     {
-        $this->student = $student->all()->firstOrFail();
+        try {
+            $this->student = $student->all()->firstOrFail();
+        } catch (ItemNotFoundException $infe) {
+            abort(404, $infe->getMessage());
+        }
     }
 
     public function setCurrentStudent(Student $student)
