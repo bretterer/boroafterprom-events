@@ -6,7 +6,6 @@ use App\Models\Student;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Psr\Log\NullLogger;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class TicketPickup extends Component
 {
@@ -25,10 +24,7 @@ class TicketPickup extends Component
 
     public function mount(Student $student)
     {
-        $this->student = $student->all()->first();
-        if($this->student == null) {
-            throw new NotFoundResourceException;
-        }
+        $this->student = $student->all()->firstOrFail();
     }
 
     public function setCurrentStudent(Student $student)
