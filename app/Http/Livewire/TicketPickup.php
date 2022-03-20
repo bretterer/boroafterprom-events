@@ -24,7 +24,7 @@ class TicketPickup extends Component
 
     public function mount(Student $student)
     {
-        $this->student = $student->all()->first();
+        $this->student = $student->all()->firstOrFail();
     }
 
     public function setCurrentStudent(Student $student)
