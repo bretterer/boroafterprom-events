@@ -10,7 +10,7 @@
                         </svg>
                     </div>
                     <div class="mt-3 text-center sm:mt-5">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Payment successful</h3>
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Order successful</h3>
                         <div class="mt-2">
                             <p class="text-lg text-gray-500">THIS IS NOT YOUR TICKET!</p>
                             <p class="text-sm text-gray-500">Pickup will happen at lunch, Please take a screenshot of this page for your ticket pickup!</p>
@@ -48,11 +48,11 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                         </svg>
                                     </div>
-                                    <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Jane Smith</p>
+                                    <p class="ml-16 text-lg leading-6 font-medium text-gray-900">{{$student->guest->first_name}} {{$student->guest->last_name}}</p>
                                 </dt>
                                 <dd class="mt-2 ml-16 text-base text-gray-500">
-                                    jane.smith@example.com<br />
-                                    9375551212
+                                    {{$student->guest->email}}<br />
+                                    {{$student->guest->phone}}
                                 </dd>
                             </div>
                             @endif

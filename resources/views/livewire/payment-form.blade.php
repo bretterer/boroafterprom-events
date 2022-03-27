@@ -148,11 +148,22 @@
                                 <label for="cash" class="ml-3 block text-sm font-medium text-gray-700"> Cash </label>
                             </div>
 
+
+
                         </div>
+
                     </fieldset>
 
 
                     <div x-show="showCard" >
+                        @if( Str::contains(config('services.stripe.publishable_key'), ["pk_test_"]) )
+                            <div class="mt-2">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"> Test Mode </span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"> Card: 4242 4242 4242 4242 </span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"> Exp: 12/34 </span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"> CVC: 123 </span>
+                            </div>
+                        @endif
                         <div id="card-element" wire:ignore class="py-6 px-2">
                             <!-- A Stripe Element will be inserted here. -->
                         </div>
