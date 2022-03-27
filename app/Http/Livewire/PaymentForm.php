@@ -2,14 +2,15 @@
 
 namespace App\Http\Livewire;
 
+use Stripe\Charge;
 use Stripe\Stripe;
 use App\Models\Guest;
 use App\Models\Ticket;
 use App\Models\Student;
 use Livewire\Component;
-use Stripe\Charge;
-use Stripe\Exception\CardException;
 use Stripe\PaymentIntent;
+use Illuminate\Support\Str;
+use Stripe\Exception\CardException;
 
 class PaymentForm extends Component
 {
@@ -18,6 +19,7 @@ class PaymentForm extends Component
     public $ticketCost = 10;
     public $hasGuest = false;
     public $paymentToken;
+    public $totalCost;
 
     public $first_name;
     public $last_name;
@@ -28,24 +30,27 @@ class PaymentForm extends Component
     public $guest_email;
     public $guest_phone;
 
-    protected $rules = [
-        'first_name' => 'required',
-        'last_name' => 'required',
-        'email' => 'email',
-        'phone' => 'required',
-    ];
+    public function rules()
+    {
+        return [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => [
+                'email',
+                function ($attribute, $value, $fail) {
+                    if( Str::contains($value, ["@students.springboro.org"]) ) {
+                        $fail('please do not use your school email address');
+                    }
+                }
+            ],
+            'phone' => 'required',
+        ];
+    }
 
     public function mount()
     {
         // This is your test secret API key.
-        Stripe::setApiKey(config('services.stripe.secret_key'));
-
-        $paymentIntent = PaymentIntent::create([
-            'amount' => 1000,
-            'currency' => 'usd',
-        ]);
-
-        $this->clientSecret = $paymentIntent->client_secret;
+        // Stripe::setApiKey(config('services.stripe.secret_key'));
         $this->totalCost = $this->ticketCost * $this->ticketCount;
     }
 
@@ -82,9 +87,11 @@ class PaymentForm extends Component
 
         Stripe::setApiKey(config('services.stripe.secret_key'));
 
+        $this->totalCost = $this->ticketCost * $this->ticketCount;
+
         try {
             $charge = Charge::create([
-                'amount' => $this->totalCost*100,
+                'amount' => $this->totalCost * 100,
                 'currency' => 'usd',
                 'description' => 'Boro After Prom Tickets',
                 'source' => $this->paymentToken,
@@ -98,35 +105,28 @@ class PaymentForm extends Component
             $people['student']->save();
 
             return redirect(route('tickets.success', ['orderId' => explode('-', $people['student']->id)[0]]));
-
-        } catch(CardException $ce) {
+        } catch (CardException $ce) {
 
 
             $people['student']->delete();
-            if($people['guest']) {
+            if ($people['guest']) {
                 $people['guest']->delete();
             }
 
             $errors = $this->getErrorBag();
             $errors->add('card', $ce->getMessage());
-
-
         }
-
-
-
-
     }
 
     public function validateInput()
     {
         $studentData = $this->validate();
 
-        if($this->hasGuest) {
+        if ($this->hasGuest) {
             $guestData = $this->validate([
                 'guest_first_name' => 'required',
                 'guest_last_name' => 'required',
-                'guest_email' => 'email',
+                'guest_email' => 'nullable|email',
                 'guest_phone' => 'required',
             ]);
         }
@@ -139,7 +139,7 @@ class PaymentForm extends Component
 
         $studentData = $this->validate();
 
-        if($this->hasGuest) {
+        if ($this->hasGuest) {
             $guestData = $this->validate([
                 'guest_first_name' => 'required',
                 'guest_last_name' => 'required',
@@ -159,7 +159,7 @@ class PaymentForm extends Component
         ]);
 
 
-        if($this->hasGuest) {
+        if ($this->hasGuest) {
             // add guest
             $guest = Guest::create([
                 'first_name' => $guestData['guest_first_name'],
@@ -171,6 +171,6 @@ class PaymentForm extends Component
             $student->guest()->save($guest);
         }
 
-        return ['student'=>$student, 'guest'=>$guest];
+        return ['student' => $student, 'guest' => $guest];
     }
 }

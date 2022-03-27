@@ -10,6 +10,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <script defer src="{{ asset('js/app.js') }}"></script>
+
     @livewireStyles
 </head>
 

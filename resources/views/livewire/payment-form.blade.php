@@ -133,7 +133,12 @@
         <div class="mt-10 lg:mt-0">
             <!-- Payment -->
             <div>
-                <h2 class="text-lg font-medium text-gray-900">Payment</h2>
+                <div class="flex">
+                    <h2 class="text-lg font-medium text-gray-900">Payment</h2>
+                    @if( Str::contains(config('services.stripe.publishable_key'), ["pk_test_"]) )
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"> Test Mode </span>
+                    @endif
+                </div>
                 <div class=" bg-white border border-gray-200 rounded-lg shadow-sm px-4 py-6">
                     <fieldset>
                         <legend class="sr-only">Payment type</legend>
@@ -155,15 +160,7 @@
                     </fieldset>
 
 
-                    <div x-show="showCard" >
-                        @if( Str::contains(config('services.stripe.publishable_key'), ["pk_test_"]) )
-                            <div class="mt-2">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"> Test Mode </span>
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"> Card: 4242 4242 4242 4242 </span>
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"> Exp: 12/34 </span>
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"> CVC: 123 </span>
-                            </div>
-                        @endif
+                    <div x-show="showCard" class="pt-4">
                         <div id="card-element" wire:ignore class="py-6 px-2">
                             <!-- A Stripe Element will be inserted here. -->
                         </div>
@@ -224,19 +221,10 @@
         <script>
             var stripe = Stripe("{{config('services.stripe.publishable_key')}}");
             var elements = stripe.elements();
-            // Custom styling can be passed to options when creating an Element.
-            var style = {
-                base: {
-                    // Add your base input styles here. For example:
-                    fontSize: '16px',
-                    color: '#32325d',
-                },
-            };
+
 
             // Create an instance of the card Element.
-            var card = elements.create('card', {
-                style: style
-            });
+            var card = elements.create('card');
 
 
             // Add an instance of the card Element into the `card-element` <div>.
