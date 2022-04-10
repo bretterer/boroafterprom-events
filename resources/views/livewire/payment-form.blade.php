@@ -66,7 +66,8 @@
             </div>
 
             <div class="mt-10 border-t border-gray-200">
-                <button x-show="!showGuest" wire:click="addGuest" type="button" class="mt-12 inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Add Guest</button>
+            <h2 class="text-lg font-medium text-gray-900 mt-12">Guest Information</h2>
+                <button x-show="!showGuest" wire:click="addGuest" type="button" class="mt-4 inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Add Guest</button>
                 <div class="pt-10" x-show="showGuest" x-cloak>
                     <div class="flex justify-between items-center">
                         <h2 class="text-lg font-medium text-gray-900">Guest Information</h2>

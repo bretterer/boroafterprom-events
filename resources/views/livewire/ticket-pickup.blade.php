@@ -178,7 +178,7 @@
                             </div>
                             <div class="sm:col-span-1">
                                 <dt class="text-sm font-medium text-gray-500">Tickets Purchased</dt>
-                                <dd class="mt-1 text-sm text-gray-900">2</dd>
+                                <dd class="mt-1 text-sm text-gray-900">@if($this->student->guest) 3 @else 1 @endif</dd>
                             </div>
                             <div class="sm:col-span-1">
                                 <h3 class="text-sm font-medium text-gray-500">Payment Method</h3>
@@ -221,7 +221,11 @@
                                             </div>
                                         </div>
                                         <div class="mt-4 sm:mt-0 sm:ml-6 sm:flex-shrink-0">
+                                            @if($this->student->paid_on != null && $this->student->payment_type = "cash")
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800"> PAID </span>
+                                            @elseif($this->student->picked_up == null && $this->student->paid_on == null && $this->student->payment_type == "cash")
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-red-100 text-red-800"> PENDING PAYMENT </span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

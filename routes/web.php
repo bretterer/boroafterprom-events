@@ -2,6 +2,8 @@
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TicketConfirmationEmail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +30,7 @@ Route::get('/tickets/success', function (Request $request) {
 
     $student = Student::with('guest')->where('id', 'like', $orderId.'-%')->firstOrFail();
 
+    Mail::to($student->email)->send(new TicketConfirmationEmail($student));
 
     return view('tickets.success', ['student' => $student]);
 })->name('tickets.success');
