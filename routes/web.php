@@ -37,4 +37,4 @@ Route::get('/tickets/success', function (Request $request) {
 
 Route::get('/tickets/pickup', function () {
     return view('ticket_pickup');
-});
+})->middleware('auth.basic');
