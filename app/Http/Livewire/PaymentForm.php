@@ -29,6 +29,7 @@ class PaymentForm extends Component
     public $guest_last_name;
     public $guest_email;
     public $guest_phone;
+    public $confirmation;
 
     public function rules()
     {
@@ -44,6 +45,7 @@ class PaymentForm extends Component
                 }
             ],
             'phone' => 'required',
+            'confirmation' => 'required',
         ];
     }
 

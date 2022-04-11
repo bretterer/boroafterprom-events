@@ -219,6 +219,19 @@
                 </dl>
 
                 <div class="border-t border-gray-200 py-6 px-4 sm:px-6 flex space-x-2">
+                    <div class="flex items-center h-5">
+                        <input id="confirmation" wire:model="confirmation" aria-describedby="confirmation-description" name="confirmation" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <p id="confirmation-description" class="text-gray-500">By continuing with this purchase, I confirm that the student is a Junior or Senior of Springboro Highschool and the registered guest who is not a student of Springboro has a form that will be provided at ticket pickup.</p>
+                        @if($errors->has('confirmation'))
+                        <span class="text-red-500">{{ $errors->first('confirmation') }}</span>
+                        @endif
+                    </div>
+
+                </div>
+
+                <div class="border-t border-gray-200 py-6 px-4 sm:px-6 flex space-x-2">
                     <button @click="submitOrder()" class="w-full bg-blue-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500">Continue</button>
                     <!-- <button wire:click="payCash" class="w-1/2 bg-gray-200 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-blue-600 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-gray-500">Pay with Cash</button> -->
                 </div>
