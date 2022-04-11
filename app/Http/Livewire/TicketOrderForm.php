@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Stripe\Stripe;
 use Livewire\Component;
 
 class TicketOrderForm extends Component
@@ -13,6 +14,7 @@ class TicketOrderForm extends Component
 
     public function mount()
     {
+
         $this->totalCost = $this->ticketCost * $this->ticketCount;
     }
 

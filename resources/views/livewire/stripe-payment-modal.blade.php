@@ -55,9 +55,10 @@
         var stripe = Stripe("{{config('services.stripe.publishable_key')}}");
 
         var elements = stripe.elements();
-        var paymentElement = elements.create('payment');
+        var cardNumberElement = elements.create('cardNumber');
+        var cardExpiryElement = elements.create('cardExpiry');
+        var cardCvcElement = elements.create('cardCvc');
 
-
-        paymentElement.mount('#payment-element');
+        
     </script>
 </div>

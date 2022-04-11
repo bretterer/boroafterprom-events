@@ -9,7 +9,14 @@
         Livewire.on('removeGuest', () => {
             showGuest = false
         })">
+        <div class="mb-8">
+            <p class="text-gray-900">Please use the below form to order your tickets for Afterprom.</p>
+            <p class="text-gray-900 font-bold">If you are bringing a guest, please click the "add guest" button below your information</p>
+            <p class="text-gray-900">If you are experiencing issues with ordering tickets, please email <a class="text-blue-700" href="mailto:tickets@boroafterprom.com">tickets@boroafterprom.com</a></p>
+        </div>
     <div class="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
+
+
 
         <div>
             <div>
