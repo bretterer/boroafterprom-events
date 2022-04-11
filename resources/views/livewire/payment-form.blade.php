@@ -223,7 +223,7 @@
                         <input id="confirmation" wire:model="confirmation" aria-describedby="confirmation-description" name="confirmation" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
                     </div>
                     <div class="ml-3 text-sm">
-                        <p id="confirmation-description" class="text-gray-500">By continuing with this purchase, I confirm that the student is a Junior or Senior of Springboro Highschool and the registered guest who is not a student of Springboro has a form that will be provided at ticket pickup.</p>
+                        <p id="confirmation-description" class="text-gray-500">By continuing with this purchase, I confirm that the student is a Junior or Senior of Springboro Highschool and the registered guest who is not a student of Springboro has a form that will be provided to the school.</p>
                         @if($errors->has('confirmation'))
                         <span class="text-red-500">{{ $errors->first('confirmation') }}</span>
                         @endif
