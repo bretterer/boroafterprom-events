@@ -47,7 +47,7 @@ class TicketPickup extends Component
         $this->ticketsSold = 0;
         $this->ticketsPickedUp = 0;
         $this->checkedIn = 0;
-        $students = Student::with('guest')->where('first_name', 'like', '%'.$this->search.'%')->orWhere('last_name', 'like', '%'.$this->search.'%')->orWhere('id', 'like', $this->search.'%');
+        $students = Student::with('guest')->where('first_name', 'like', '%'.$this->search.'%')->orWhere('last_name', 'like', '%'.$this->search.'%')->orWhere('id', 'like', $this->search.'%')->orderBy('last_name');
 
         foreach($students->get() as $student) {
             $this->ticketsSold++;
