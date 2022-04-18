@@ -32,4 +32,10 @@ class Student extends Model
     {
         return $this->hasOne(Guest::class);
     }
+
+    public function ticketsSold()
+    {
+
+        return 1;
+    }
 }

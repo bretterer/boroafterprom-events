@@ -13,6 +13,34 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div class="mt-8 flex flex-col">
+            <div id="stats" class=" mb-8">
+
+
+                <!-- This example requires Tailwind CSS v2.0+ -->
+                <div>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Ticket Stats</h3>
+                    <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+                        <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+                            <dt class="text-sm font-medium text-gray-500 truncate">Tickets Sold</dt>
+                            <dd class="mt-1 text-3xl font-semibold text-gray-900">{{$ticketsSold}}</dd>
+                        </div>
+
+                        <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+                            <dt class="text-sm font-medium text-gray-500 truncate">Tickets Picked up</dt>
+                            <dd class="mt-1 text-3xl font-semibold text-gray-900">{{$ticketsPickedUp}}</dd>
+                        </div>
+
+                        <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+                            <dt class="text-sm font-medium text-gray-500 truncate">Checked In</dt>
+                            <dd class="mt-1 text-3xl font-semibold text-gray-900">{{$checkedIn}}</dd>
+                        </div>
+                    </dl>
+                </div>
+
+
+
+
+            </div>
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700">Search Tickets</label>
                 <div class="mt-1 flex rounded-md shadow-sm">

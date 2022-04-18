@@ -13,6 +13,9 @@ class TicketPickup extends Component
     use WithPagination;
 
     public $search = '';
+    public $ticketsSold = 0;
+    public $ticketsPickedUp = 0;
+    public $checkedIn = 0;
 
     public ?Student $student;
 
@@ -40,8 +43,42 @@ class TicketPickup extends Component
 
     public function render()
     {
+
+        $this->ticketsSold = 0;
+        $this->ticketsPickedUp = 0;
+        $this->checkedIn = 0;
+        $students = Student::with('guest')->where('first_name', 'like', '%'.$this->search.'%')->orWhere('last_name', 'like', '%'.$this->search.'%')->orWhere('id', 'like', $this->search.'%');
+
+        foreach($students->get() as $student) {
+            $this->ticketsSold++;
+
+            if ( $student->guest ) {
+                $this->ticketsSold++;;
+            }
+
+            if ($student->picked_up != null) {
+                $this->ticketsPickedUp++;
+                if ( $student->guest ) {
+                    $this->ticketsPickedUp++;;
+                }
+            }
+
+            if ($student->checked_in != null) {
+                $this->checkedIn++;
+                if ( $student->guest ) {
+                    $this->checkedIn++;;
+                }
+            }
+        }
+
+
+        // $this->ticketsPickedUp
+
         return view('livewire.ticket-pickup', [
-            'students'=> Student::with('guest')->where('first_name', 'like', '%'.$this->search.'%')->orWhere('last_name', 'like', '%'.$this->search.'%')->orWhere('id', 'like', $this->search.'%')->paginate(10),
+            'students'=> $students->paginate(10),
+            'ticketsSold' => $this->ticketsSold,
+            'ticketsPickedUp' => $this->ticketsPickedUp,
+            'checkedIn' => $this->checkedIn,
         ]);
     }
 
