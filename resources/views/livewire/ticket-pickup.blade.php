@@ -102,6 +102,9 @@
                         </table>
                     </div>
                 </div>
+                <div class="lg:px-8 md:px-6 min-w-full">
+                    {{ $students->links() }}
+                </div>
             </div>
         </div>
     </div>
@@ -158,7 +161,7 @@
                             </div>
                             <div class="sm:col-span-1">
                                 <dt class="text-sm font-medium text-gray-500">Guest</dt>
-                                <dd class="mt-1 text-sm text-gray-900">@if($this->student->guest) {{$this->student->guest->first_name}}  {{$this->student->guest->last_name}} @else N/A @endif</dd>
+                                <dd class="mt-1 text-sm text-gray-900">@if($this->student->guest) {{$this->student->guest->first_name}} {{$this->student->guest->last_name}} @else N/A @endif</dd>
                             </div>
                             <div class="sm:col-span-1">
                                 <dt class="text-sm font-medium text-gray-500">Email</dt>
@@ -255,6 +258,7 @@
             </div>
         </div>
     </div>
+
 
 
 
