@@ -209,7 +209,7 @@
                             </div>
                             <div class="sm:col-span-1">
                                 <dt class="text-sm font-medium text-gray-500">Tickets Purchased</dt>
-                                <dd class="mt-1 text-sm text-gray-900">@if($this->student->guest) 3 @else 1 @endif</dd>
+                                <dd class="mt-1 text-sm text-gray-900">@if($this->student->guest) 2 @else 1 @endif</dd>
                             </div>
                             <div class="sm:col-span-1">
                                 <h3 class="text-sm font-medium text-gray-500">Payment Method</h3>
