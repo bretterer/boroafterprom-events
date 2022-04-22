@@ -27,7 +27,7 @@ Route::get('/tickets', function () {
 });
 
 Route::get('/tickets/secret', function () {
-    return view('tickets');
+    return view('tickets_secret');
 })->middleware('auth.basic');
 
 Route::get('/tickets/success', function (Request $request) {
