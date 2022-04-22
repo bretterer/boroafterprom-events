@@ -11,7 +11,7 @@
                     </div>
                     <div class="mt-3 text-center sm:mt-5">
                         <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Order successful</h3>
-                        <div class="mt-2">
+                        <div class="mt-2 ">
                             <p class="text-lg text-gray-500">THIS IS NOT YOUR TICKET!</p>
                             <p class="text-sm text-gray-500">Pickup will happen at lunch <span class="font-bold text-xl">April 21</span> and <span class="font-bold text-xl">April 22</span> at lunch, Please take a screenshot of this page for your ticket pickup!</p>
                             @if($student->payment_type == "cash")
