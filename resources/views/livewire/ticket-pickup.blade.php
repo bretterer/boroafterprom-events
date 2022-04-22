@@ -230,7 +230,7 @@
                                                     <div class="mt-1 sm:mt-0">Paid on {{$this->student->paid_on->format('M d, Y')}}</div>
                                                 </div>
                                                 <div class="mt-1 text-sm text-gray-600 sm:flex sm:items-center">
-                                                    <div>Charge Id: {{$this->student->payment_id}}</div>
+                                                    <div><a href="https://dashboard.stripe.com/payments/{{$this->student->payment_id}}" target="_blank">Charge Id: {{$this->student->payment_id}}</a></div>
                                                 </div>
                                             </div>
                                         </div>
