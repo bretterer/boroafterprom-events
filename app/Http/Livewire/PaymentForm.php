@@ -10,6 +10,7 @@ use App\Models\Student;
 use Livewire\Component;
 use Stripe\PaymentIntent;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 use Stripe\Exception\CardException;
 
 class PaymentForm extends Component
@@ -80,6 +81,7 @@ class PaymentForm extends Component
     public function payCash()
     {
         $people = $this->create();
+        Log::info(vsprintf("Ticket Ordered with Cash: %s", $people));
         return redirect(route('tickets.success', ['orderId' => explode('-', $people['student']->id)[0]]));
     }
 
@@ -106,6 +108,7 @@ class PaymentForm extends Component
             $people['student']->exp = $charge->source->exp_month . "/" . $charge->source->exp_year;
             $people['student']->save();
 
+            Log::info(vsprintf("Ticket Ordered with Card: %s", $people));
             return redirect(route('tickets.success', ['orderId' => explode('-', $people['student']->id)[0]]));
         } catch (CardException $ce) {
 
