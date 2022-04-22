@@ -42,9 +42,32 @@ Route::get('/tickets/pickup', function () {
 
 
 Route::get('/report', function () {
-    $users = Student::all();
-    $usersUnique = $users->unique(['first_name', 'last_name']);
-    $userDuplicates = $users->diff($usersUnique);
+    $students = Student::with('guest')->orderBy('last_name')->get();
+    $fileName = 'students.csv';
+    $headers = array(
+        "Content-type"        => "text/csv",
+        "Content-Disposition" => "attachment; filename=$fileName",
+        "Pragma"              => "no-cache",
+        "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+        "Expires"             => "0"
+    );
+    $columns = array('Student First Name', 'Student Last Name', 'Student Phone Number', 'Guest First Name', 'Guest Last Name', 'Guest Phone Number', 'Payment Method');
+    $callback = function() use($students, $columns) {
+        $file = fopen('php://output', 'w');
+        fputcsv($file, $columns);
 
-    dd($userDuplicates->toArray());
+        foreach ($students as $student) {
+            fputcsv($file, [
+            $student->first_name,
+            $student->last_name,
+            $student->phone,
+            $student->guest?->first_name,
+            $student->guest?->last_name,
+            $student->guest?->phone,
+            $student->payment_type,
+            ]);
+        }
+        fclose($file);
+    };
+    return response()->stream($callback, 200, $headers);
 })->middleware('auth.basic');
