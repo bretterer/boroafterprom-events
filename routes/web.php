@@ -26,6 +26,10 @@ Route::get('/tickets', function () {
     return view('tickets');
 });
 
+Route::get('/tickets/secret', function () {
+    return view('tickets');
+})->middleware('auth.basic');
+
 Route::get('/tickets/success', function (Request $request) {
     $orderId = $request->get('orderId');
 
