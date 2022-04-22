@@ -2,6 +2,7 @@
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Mail\TicketRefundedEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TicketConfirmationEmail;
 use Illuminate\Support\Facades\Route;

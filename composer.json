@@ -13,6 +13,7 @@
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.10",
+        "marvinlabs/laravel-discord-logger": "^1.2",
         "stripe/stripe-php": "^7.116",
         "symfony/http-client": "^6.0",
         "symfony/postmark-mailer": "^6.0"

@@ -145,7 +145,7 @@ class PaymentForm extends Component
             $guestData = $this->validate([
                 'guest_first_name' => 'required',
                 'guest_last_name' => 'required',
-                'guest_email' => 'email',
+                'guest_email' => 'nullable|email',
                 'guest_phone' => 'required',
             ]);
         }

@@ -2,11 +2,15 @@
 
 namespace App\Http\Livewire;
 
+use Stripe\Stripe;
 use App\Models\Student;
-use Illuminate\Support\ItemNotFoundException;
 use Livewire\Component;
-use Livewire\WithPagination;
 use Psr\Log\NullLogger;
+use Livewire\WithPagination;
+use App\Mail\TicketRefundedEmail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\ItemNotFoundException;
 
 class TicketPickup extends Component
 {
@@ -115,6 +119,36 @@ class TicketPickup extends Component
         $this->student->refresh();
 
         $this->emit('closeModal');
+    }
+
+    public function refundPayment()
+    {
+        $stripe = new \Stripe\StripeClient(
+            config('services.stripe.secret_key')
+          );
+        try {
+            $refund = $stripe->refunds->create([
+                'charge' => $this->student->payment_id,
+            ]);
+
+            Log::info("Refunded a ticket: {$this->student->payment_id}");
+
+            $this->student->delete();
+            Mail::to($this->student->email)->send(new TicketRefundedEmail($this->student));
+            $this->emit('closeModal');
+
+        } catch (\Exception $e) {
+            $message = "Attempted to refund {$this->student->first_name} {$this->student->last_name}\n";
+            $message .= "Could not proccess the refund!\n";
+            $message .= $e;
+            Log::error($message);
+
+
+
+            dd('Could not process refund. Refresh Page. This has been logged!');
+        }
+
+
     }
 
 }
