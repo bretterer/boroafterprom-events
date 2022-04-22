@@ -151,4 +151,23 @@ class TicketPickup extends Component
 
     }
 
+    public function deleteEntry()
+    {
+        try {
+            $this->student->delete();
+            $this->emit('closeModal');
+
+        } catch (\Exception $e) {
+            $message = "Attempted to delete {$this->student->first_name} {$this->student->last_name}\n";
+            $message .= $e;
+            Log::error($message);
+
+
+
+            dd('Could not process refund. Refresh Page. This has been logged!');
+        }
+
+
+    }
+
 }
