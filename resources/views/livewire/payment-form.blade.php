@@ -232,7 +232,7 @@
                 </div>
 
                 <div class="border-t border-gray-200 py-6 px-4 sm:px-6 flex space-x-2">
-                    <button @click="submitOrder()" class="w-full bg-blue-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500">Continue</button>
+                    <button @click="submitOrder()" wire:loading.attr="disabled" id="submitOrder" class="w-full bg-blue-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500">Continue</button>
                     <!-- <button wire:click="payCash" class="w-1/2 bg-gray-200 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-blue-600 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-gray-500">Pay with Cash</button> -->
                 </div>
             </div>
@@ -255,6 +255,8 @@
 
             function submitOrder() {
 
+                // document.getElementById('#submitOrder').disabled = true;
+
                 if (document.querySelector('input[name="payment-type"]:checked').value == 'cash') {
                     @this.payCash();
                     return;
@@ -270,6 +272,7 @@
                         // Inform the customer that there was an error.
                         var errorElement = document.getElementById('card-errors');
                         errorElement.textContent = result.error.message;
+                        // document.getElementById('#submitOrder').disabled = false;
                     } else {
                         // Send the token to your server.
                         @this.paymentToken = result.token.id;
