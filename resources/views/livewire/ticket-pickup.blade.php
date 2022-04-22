@@ -229,6 +229,9 @@
                                                     <span class="hidden sm:mx-2 sm:inline" aria-hidden="true"> · </span>
                                                     <div class="mt-1 sm:mt-0">Paid on {{$this->student->paid_on->format('M d, Y')}}</div>
                                                 </div>
+                                                <div class="mt-1 text-sm text-gray-600 sm:flex sm:items-center">
+                                                    <div>Charge Id: {{$this->student->payment_id}}</div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="mt-4 sm:mt-0 sm:ml-6 sm:flex-shrink-0">
