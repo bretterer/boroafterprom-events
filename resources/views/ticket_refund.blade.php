@@ -8,6 +8,7 @@
 </head>
 <body>
     <h1> Ticket Refunded </h1>
+    <p>We noticed you had a duplicate charge in our system, so we have proactively refunded one of your ticket charges to you.</p>
     <p>Your Afterprom ticket has been refunded.  Please allow a 4-5 days for refund to process fully.</p>
     <p>If you have any further questions, please reply to this email</p>
 </body>
