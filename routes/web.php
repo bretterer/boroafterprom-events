@@ -29,7 +29,7 @@ Route::get('/tickets', function () {
 Route::get('/tickets/success', function (Request $request) {
     $orderId = $request->get('orderId');
 
-    $student = Student::with('guest')->where('id', 'like', $orderId.'-%')->firstOrFail();
+    $student = Student::with('guest')->where('id', 'like', $orderId . '-%')->firstOrFail();
 
     Mail::to($student->email)->send(new TicketConfirmationEmail($student));
 
@@ -38,4 +38,13 @@ Route::get('/tickets/success', function (Request $request) {
 
 Route::get('/tickets/pickup', function () {
     return view('ticket_pickup');
+})->middleware('auth.basic');
+
+
+Route::get('/report', function () {
+    $users = Student::all();
+    $usersUnique = $users->unique(['first_name', 'last_name']);
+    $userDuplicates = $users->diff($usersUnique);
+
+    dd($userDuplicates->toArray());
 })->middleware('auth.basic');
