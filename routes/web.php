@@ -26,6 +26,10 @@ Route::get('/tickets', function () {
     return view('tickets');
 });
 
+Route::get('/tickets/checkin', function () {
+    return view('tickets.checkin');
+})->middleware('auth.basic');
+
 Route::get('/tickets/secret', function () {
     return view('tickets_secret');
 })->middleware('auth.basic');
