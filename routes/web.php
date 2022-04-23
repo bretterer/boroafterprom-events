@@ -32,7 +32,7 @@ Route::get('/tickets/checkin', function () {
 
 Route::get('/tickets/secret', function () {
     return view('tickets_secret');
-})->middleware('auth.basic');
+});
 
 Route::get('/tickets/success', function (Request $request) {
     $orderId = $request->get('orderId');

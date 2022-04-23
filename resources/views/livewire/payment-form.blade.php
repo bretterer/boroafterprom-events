@@ -156,11 +156,6 @@
                                 <label for="credit-card" class="ml-3 block text-sm font-medium text-gray-700"> Credit card </label>
                             </div>
 
-                            <div @click="showCard = false" class="flex items-center ml-6">
-                                <input id="cash" value="cash" name="payment-type" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
-                                <label for="cash" class="ml-3 block text-sm font-medium text-gray-700"> Cash </label>
-                            </div>
-
 
 
                         </div>
