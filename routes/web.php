@@ -59,20 +59,31 @@ Route::get('/report', function () {
         "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
         "Expires"             => "0"
     );
-    $columns = array('Student First Name', 'Student Last Name', 'Student Phone Number', 'Guest First Name', 'Guest Last Name', 'Guest Phone Number', 'Payment Method');
-    $callback = function() use($students, $columns) {
+    $columns = array('Student First Name', 'Student Last Name', 'Student Phone Number', 'Guest First Name', 'Guest Last Name', 'Guest Phone Number', 'Payment Method', 'Payment Status');
+    $callback = function () use ($students, $columns) {
         $file = fopen('php://output', 'w');
         fputcsv($file, $columns);
 
         foreach ($students as $student) {
+
+            if ($student->picked_up != null)
+                $status = "Picked up";
+            elseif ($student->picked_up == null && $student->paid_on != null && $student->payment_type != "cash")
+                $status = "Paid";
+            elseif ($student->picked_up == null && $student->paid_on == null && $student->payment_type == "cash")
+                $status = "Pending Payment";
+
+
+
             fputcsv($file, [
-            $student->first_name,
-            $student->last_name,
-            $student->phone,
-            $student->guest?->first_name,
-            $student->guest?->last_name,
-            $student->guest?->phone,
-            $student->payment_type,
+                $student->first_name,
+                $student->last_name,
+                $student->phone,
+                $student->guest?->first_name,
+                $student->guest?->last_name,
+                $student->guest?->phone,
+                $student->payment_type,
+                $status,
             ]);
         }
         fclose($file);
