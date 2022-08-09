@@ -31,66 +31,66 @@ Route::get('/tickets/checkin', function () {
 })->middleware('auth.basic');
 
 Route::get('/tickets/checkout', function () {
-    return view('tickets.checkout');
-})->middleware('auth.basic');
+//     return view('tickets.checkout');
+// })->middleware('auth.basic');
 
-Route::get('/tickets/secret', function () {
-    return view('tickets_secret');
-});
+// Route::get('/tickets/secret', function () {
+//     return view('tickets_secret');
+// });
 
-Route::get('/tickets/success', function (Request $request) {
-    $orderId = $request->get('orderId');
+// Route::get('/tickets/success', function (Request $request) {
+//     $orderId = $request->get('orderId');
 
-    $student = Student::with('guest')->where('id', 'like', $orderId . '-%')->firstOrFail();
+//     $student = Student::with('guest')->where('id', 'like', $orderId . '-%')->firstOrFail();
 
-    Mail::to($student->email)->send(new TicketConfirmationEmail($student));
+//     Mail::to($student->email)->send(new TicketConfirmationEmail($student));
 
-    return view('tickets.success', ['student' => $student]);
-})->name('tickets.success');
+//     return view('tickets.success', ['student' => $student]);
+// })->name('tickets.success');
 
-Route::get('/tickets/pickup', function () {
-    return view('ticket_pickup');
-})->middleware('auth.basic');
-
-
-Route::get('/report', function () {
-    $students = Student::with('guest')->orderBy('last_name')->get();
-    $fileName = 'students.csv';
-    $headers = array(
-        "Content-type"        => "text/csv",
-        "Content-Disposition" => "attachment; filename=$fileName",
-        "Pragma"              => "no-cache",
-        "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
-        "Expires"             => "0"
-    );
-    $columns = array('Student First Name', 'Student Last Name', 'Student Phone Number', 'Guest First Name', 'Guest Last Name', 'Guest Phone Number', 'Payment Method', 'Payment Status');
-    $callback = function () use ($students, $columns) {
-        $file = fopen('php://output', 'w');
-        fputcsv($file, $columns);
-
-        foreach ($students as $student) {
-
-            if ($student->picked_up != null)
-                $status = "Picked up";
-            elseif ($student->picked_up == null && $student->paid_on != null && $student->payment_type != "cash")
-                $status = "Paid";
-            elseif ($student->picked_up == null && $student->paid_on == null && $student->payment_type == "cash")
-                $status = "Pending Payment";
+// Route::get('/tickets/pickup', function () {
+//     return view('ticket_pickup');
+// })->middleware('auth.basic');
 
 
+// Route::get('/report', function () {
+//     $students = Student::with('guest')->orderBy('last_name')->get();
+//     $fileName = 'students.csv';
+//     $headers = array(
+//         "Content-type"        => "text/csv",
+//         "Content-Disposition" => "attachment; filename=$fileName",
+//         "Pragma"              => "no-cache",
+//         "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+//         "Expires"             => "0"
+//     );
+//     $columns = array('Student First Name', 'Student Last Name', 'Student Phone Number', 'Guest First Name', 'Guest Last Name', 'Guest Phone Number', 'Payment Method', 'Payment Status');
+//     $callback = function () use ($students, $columns) {
+//         $file = fopen('php://output', 'w');
+//         fputcsv($file, $columns);
 
-            fputcsv($file, [
-                $student->first_name,
-                $student->last_name,
-                $student->phone,
-                $student->guest?->first_name,
-                $student->guest?->last_name,
-                $student->guest?->phone,
-                $student->payment_type,
-                $status,
-            ]);
-        }
-        fclose($file);
-    };
-    return response()->stream($callback, 200, $headers);
-})->middleware('auth.basic');
+//         foreach ($students as $student) {
+
+//             if ($student->picked_up != null)
+//                 $status = "Picked up";
+//             elseif ($student->picked_up == null && $student->paid_on != null && $student->payment_type != "cash")
+//                 $status = "Paid";
+//             elseif ($student->picked_up == null && $student->paid_on == null && $student->payment_type == "cash")
+//                 $status = "Pending Payment";
+
+
+
+//             fputcsv($file, [
+//                 $student->first_name,
+//                 $student->last_name,
+//                 $student->phone,
+//                 $student->guest?->first_name,
+//                 $student->guest?->last_name,
+//                 $student->guest?->phone,
+//                 $student->payment_type,
+//                 $status,
+//             ]);
+//         }
+//         fclose($file);
+//     };
+//     return response()->stream($callback, 200, $headers);
+// })->middleware('auth.basic');

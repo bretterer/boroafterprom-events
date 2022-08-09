@@ -51,7 +51,7 @@ class EventCheckout extends Component
                 }
             }
         }
-
+ 
         return view('livewire.event-checkout', [
             'students' => $students->whereNotNull('checked_out')->get(),
             'ticketsSold' => 0,
