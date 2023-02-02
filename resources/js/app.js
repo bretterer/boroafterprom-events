@@ -1,11 +1,9 @@
-import Alpine from 'alpinejs'
+import './bootstrap';
 
-window._ = require('lodash');
+import Alpine from 'alpinejs';
+import focus from '@alpinejs/focus';
+window.Alpine = Alpine;
 
-window.axios = require('axios');
+Alpine.plugin(focus);
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-window.Alpine = Alpine
-
-Alpine.start()
+Alpine.start();
