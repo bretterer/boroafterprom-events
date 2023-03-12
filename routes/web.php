@@ -25,4 +25,19 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    Route::get('/attendees', function () {
+        return view('admin.attendees');
+    })->name('attendees');
+});
+
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/tickets', function () {
+        return view('admin.tickets');
+    })->name('tickets');
 });

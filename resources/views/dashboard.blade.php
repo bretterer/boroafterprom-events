@@ -5,11 +5,18 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <x-jet-welcome />
-            </div>
-        </div>
-    </div>
+    <!-- Secondary column (hidden on smaller screens) -->
+    <aside class="hidden w-96 overflow-y-auto border-l border-gray-200 bg-white lg:block">
+        <!-- Your content -->
+        List
+    </aside>
+
+    <main class="flex-1 overflow-y-auto">
+        <!-- Primary column -->
+        <section aria-labelledby="primary-heading" class="flex h-full min-w-0 flex-1 flex-col lg:order-last">
+            <!-- Your content -->
+            Main
+        </section>
+    </main>
+
 </x-app-layout>
