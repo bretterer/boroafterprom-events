@@ -15,11 +15,13 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
+            $table->uuid();
             $table->timestamp('picked_up')->nullable();
             $table->timestamp('paid_on')->nullable();
             $table->string('payment_type')->nullable();
             $table->string('payment_id')->nullable();
             $table->unsignedBigInteger('attendee_id')->nullable();
+            $table->unsignedInteger('event_id');
             $table->timestamps();
         });
     }

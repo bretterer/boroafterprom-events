@@ -14,12 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::table('attendees', function (Blueprint $table) {
-            $table->foreign('guest_id')->references('id')->on('attendees');
-            $table->foreign('ticket_id')->references('id')->on('tickets');
+            $table->foreign('guest_id')->references('id')->on('attendees')->onDelete('cascade');
         });
 
         Schema::table('tickets', function (Blueprint $table) {
-            // $table->foreignId('attendee_id')->references('id')->on('attendees');
+            $table->foreign('attendee_id')->references('id')->on('attendees')->onDelete('cascade');
         });
     }
 
@@ -32,11 +31,10 @@ return new class extends Migration
     {
         Schema::table('attendees', function (Blueprint $table) {
             $table->dropForeign('attendees_guest_id_foreign');
-            $table->dropForeign('attendees_ticket_id_foreign');
         });
 
         Schema::table('tickets', function (Blueprint $table) {
-            // $table->dropForeign('tickets_attendee_id_foreign');
+            $table->dropForeign('tickets_attendee_id_foreign');
         });
     }
 };

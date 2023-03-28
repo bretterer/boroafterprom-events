@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamp('checked_in')->nullable();
             $table->timestamp('checked_out')->nullable();
             $table->unsignedBigInteger('guest_id')->nullable();
-            $table->unsignedBigInteger('ticket_id')->nullable();
+            $table->unsignedInteger('event_id');
             $table->timestamps();
         });
     }
