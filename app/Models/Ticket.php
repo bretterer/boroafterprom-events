@@ -15,6 +15,7 @@ class Ticket extends Model
         'event_id'
     ];
 
+
     /**
      * The attributes that should be cast.
      *
@@ -30,4 +31,13 @@ class Ticket extends Model
     public function attendee() {
         return $this->belongsTo(Attendee::class);
     }
+
+    public function getDatePickedUpAttribute() {
+        return $this->picked_up!= null ? $this->picked_up->format('F d, Y') : 'N/A';
+    }
+
+    public function getDatePaidAttribute() {
+        return $this->paid_on != null ? $this->paid_on->format('F d, Y') : 'N/A';
+    }
+
 }

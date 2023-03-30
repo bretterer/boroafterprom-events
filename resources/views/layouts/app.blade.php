@@ -37,14 +37,14 @@
                 </div>
                 <div class="mt-6 w-full flex-1 space-y-1 px-2">
 
-                    <a href="#" class="text-boro-100 hover:bg-boro-800 hover:text-white group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium" x-state:on="Current" x-state:off="Default" x-state-description="Current: &quot;bg-boro-800 text-white&quot;, Default: &quot;text-boro-100 hover:bg-boro-800 hover:text-white&quot;">
+                    <a href="#" class="hidden text-boro-100 hover:bg-boro-800 hover:text-white group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium" x-state:on="Current" x-state:off="Default" x-state-description="Current: &quot;bg-boro-800 text-white&quot;, Default: &quot;text-boro-100 hover:bg-boro-800 hover:text-white&quot;">
                         <svg class="text-boro-300 group-hover:text-white h-6 w-6" x-state:on="Current" x-state:off="Default" x-state-description="Current: &quot;text-white&quot;, Default: &quot;text-boro-300 group-hover:text-white&quot;" x-description="Heroicon name: outline/home" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"></path>
                         </svg>
                         <span class="mt-2">Home</span>
                     </a>
 
-                    <a href="#" class="text-boro-100 hover:bg-boro-800 hover:text-white group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium" x-state-description="undefined: &quot;bg-boro-800 text-white&quot;, undefined: &quot;text-boro-100 hover:bg-boro-800 hover:text-white&quot;">
+                    <a href="#" class="hidden text-boro-100 hover:bg-boro-800 hover:text-white group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium" x-state-description="undefined: &quot;bg-boro-800 text-white&quot;, undefined: &quot;text-boro-100 hover:bg-boro-800 hover:text-white&quot;">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-boro-300 group-hover:text-white h-6 w-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
                         </svg>
@@ -91,14 +91,14 @@
                         <nav class="flex h-full flex-col">
                             <div class="space-y-1">
 
-                                <a href="#" class="text-boro-100 hover:bg-boro-800 hover:text-white group py-2 px-3 rounded-md flex items-center text-sm font-medium" x-state:on="Current" x-state:off="Default" x-state-description="Current: &quot;bg-boro-800 text-white&quot;, Default: &quot;text-boro-100 hover:bg-boro-800 hover:text-white&quot;">
+                                <a href="#" class="hidden text-boro-100 hover:bg-boro-800 hover:text-white group py-2 px-3 rounded-md flex items-center text-sm font-medium" x-state:on="Current" x-state:off="Default" x-state-description="Current: &quot;bg-boro-800 text-white&quot;, Default: &quot;text-boro-100 hover:bg-boro-800 hover:text-white&quot;">
                                     <svg class="text-boro-300 mr-3 group-hover:text-white h-6 w-6" x-state:on="Current" x-state:off="Default" x-state-description="Current: &quot;text-white&quot;, Default: &quot;text-boro-300 group-hover:text-white&quot;" x-description="Heroicon name: outline/home" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"></path>
                                     </svg>
                                     <span>Home</span>
                                 </a>
 
-                                <a href="#" class="text-boro-100 hover:bg-boro-800 hover:text-white group py-2 px-3 rounded-md flex items-center text-sm font-medium" x-state-description="undefined: &quot;bg-boro-800 text-white&quot;, undefined: &quot;text-boro-100 hover:bg-boro-800 hover:text-white&quot;">
+                                <a href="#" class="hidden text-boro-100 hover:bg-boro-800 hover:text-white group py-2 px-3 rounded-md flex items-center text-sm font-medium" x-state-description="undefined: &quot;bg-boro-800 text-white&quot;, undefined: &quot;text-boro-100 hover:bg-boro-800 hover:text-white&quot;">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-boro-300 mr-3 group-hover:text-white h-6 w-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
                                     </svg>
@@ -144,7 +144,8 @@
                                 <div>
                                     <button type="button" class="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-boro-500 focus:ring-offset-2" id="user-menu-button" x-ref="button" @click="profileMenuOpen = !profileMenuOpen;">
                                         <span class="sr-only">Open user menu</span>
-                                        <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=8&amp;w=256&amp;h=256&amp;q=80" alt="">
+                                        <img class="hidden h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=8&amp;w=256&amp;h=256&amp;q=80" alt="">
+                                        <img class="h-8 w-8 rounded-full" src="https://www.gravatar.com/avatar/{{md5(auth()->user()->email)}}?d=robohash" alt="">
                                     </button>
                                 </div>
 

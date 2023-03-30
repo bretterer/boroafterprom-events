@@ -38,7 +38,7 @@ Route::get('/tickets/success', function (Request $request) {
     if($request->get('sendTicket')){
         Mail::to($ticket->attendee->email)->send(new TicketConfirmationEmail($ticket->attendee, $chargeInfo));
     }
-    return view('tickets.receipt', ['attendee' => $ticket->attendee, 'paymentInfo' => $chargeInfo]);
+    return view('tickets.success', ['attendee' => $ticket->attendee, 'paymentInfo' => $chargeInfo]);
 
 
 })->name('tickets.success');
@@ -49,7 +49,7 @@ Route::middleware([
     'verified'
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        return redirect(route('attendees'));
     })->name('dashboard');
 
     Route::get('/attendees', function () {

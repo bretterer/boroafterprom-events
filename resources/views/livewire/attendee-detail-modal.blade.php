@@ -52,8 +52,9 @@
                                         <div class="sm:col-span-1">
                                             <dt class="text-sm font-medium text-gray-500">Checked In</dt>
                                             <dd class="mt-1 text-sm text-gray-900 flex flex-col">
-                                                <span>3/5/2023 8:48PM</span>
+                                                <span>{{ $attendee->dateCheckedIn }}</span>
                                                 <button
+                                                    wire:click.prevent="checkIn"
                                                     class="bg-boro-500 hover:bg-boro-700 text-white font-bold py-2 px-4 rounded">
                                                     Check In
                                                 </button>
@@ -62,8 +63,9 @@
                                         <div class="sm:col-span-1">
                                             <dt class="text-sm font-medium text-gray-500">Checked Out</dt>
                                             <dd class="mt-1 text-sm text-gray-900 flex flex-col">
-                                                <span>N/A</span>
+                                                <span>{{ $attendee->dateCheckedOut }}</span>
                                                 <button
+                                                    wire:click.prevent="checkOut"
                                                     class="bg-boro-500 hover:bg-boro-700 text-white font-bold py-2 px-4 rounded">
                                                     Check Out
                                                 </button>
@@ -72,59 +74,106 @@
                                         <div class="sm:col-span-1">
                                             <dt class="text-sm font-medium text-gray-500">Ticket Purchased</dt>
                                             <dd class="mt-1 text-sm text-gray-900 flex flex-col">
-                                                <span>N/A</span>
+                                                <span>{{ $attendee->ticket->datePaid }}</span>
+                                                @if($attendee->ticket->paid_on == null)
+                                                <button
+                                                    wire:click.prevent="markPaid"
+                                                    class="bg-boro-500 hover:bg-boro-700 text-white font-bold py-2 px-4 rounded">
+                                                    Mark Paid
+                                                </button>
+                                                @else
+                                                @if($attendee->ticket->payment_type="cash")
+                                                <button
+                                                    wire:click.prevent="markUnpaid"
+                                                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                                    Mark Unpaid
+                                                </button>
+                                                @else
                                                 <button disabled
                                                     class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                                                     Paid
                                                 </button>
+                                                @endif
+                                                @endif
                                             </dd>
                                         </div>
+                                        @if($attendee->guest)
                                         <div class="sm:col-span-1">
-                                            <dt class="text-sm font-medium text-gray-500">Ticket Picked Up</dt>
+                                            <dt class="text-sm font-medium text-gray-500">Guest</dt>
                                             <dd class="mt-1 text-sm text-gray-900 flex flex-col">
-                                                <span>N/A</span>
+                                                <span>{{ $attendee->guestName }}</span>
                                                 <button
+                                                    @click.prevent="Livewire.emit('setCurrentAttendee', '{{ $attendee->guest->id }}')"
                                                     class="bg-boro-500 hover:bg-boro-700 text-white font-bold py-2 px-4 rounded">
-                                                    Pick Up
+                                                    View Guest
                                                 </button>
                                             </dd>
                                         </div>
+                                        @endif
+                                        @if($attendee->isGuest())
+                                        <div class="sm:col-span-1">
+                                            <dt class="text-sm font-medium text-gray-500">Primary Attendee</dt>
+                                            <dd class="mt-1 text-sm text-gray-900 flex flex-col">
+                                                <span>{{ $attendee->primary->first_name }} {{ $attendee->primary->last_name }}</span>
+                                                <button
+                                                    @click.prevent="Livewire.emit('setCurrentAttendee', '{{ $attendee->primary->id }}')"
+                                                    class="bg-boro-500 hover:bg-boro-700 text-white font-bold py-2 px-4 rounded">
+                                                    View Primary Attendee
+                                                </button>
+                                            </dd>
+                                        </div>
+                                        @endif
                                         <div class="sm:col-span-2">
                                             <h3 class="text-lg font-medium leading-6 text-gray-900">Payment method</h3>
+                                            @if($attendee->ticket->payment_type != "cash" && $attendee->ticket->payment_type != null && $paymentInfo != null)
                                             <div class="mt-5">
-                                                <div
-                                                    class="rounded-md bg-gray-50 px-6 py-5 sm:flex sm:items-start sm:justify-between">
-                                                    <h4 class="sr-only">Visa</h4>
+                                                <div class="rounded-md bg-gray-50 px-6 py-5 sm:flex sm:items-start sm:justify-between">
                                                     <div class="sm:flex sm:items-start">
-                                                        <svg class="h-8 w-auto sm:h-6 sm:flex-shrink-0"
-                                                            viewBox="0 0 36 24" aria-hidden="true">
-                                                            <rect width="36" height="24" fill="#224DBA"
-                                                                rx="4" />
-                                                            <path fill="#fff"
-                                                                d="M10.925 15.673H8.874l-1.538-6c-.073-.276-.228-.52-.456-.635A6.575 6.575 0 005 8.403v-.231h3.304c.456 0 .798.347.855.75l.798 4.328 2.05-5.078h1.994l-3.076 7.5zm4.216 0h-1.937L14.8 8.172h1.937l-1.595 7.5zm4.101-5.422c.057-.404.399-.635.798-.635a3.54 3.54 0 011.88.346l.342-1.615A4.808 4.808 0 0020.496 8c-1.88 0-3.248 1.039-3.248 2.481 0 1.097.969 1.673 1.653 2.02.74.346 1.025.577.968.923 0 .519-.57.75-1.139.75a4.795 4.795 0 01-1.994-.462l-.342 1.616a5.48 5.48 0 002.108.404c2.108.057 3.418-.981 3.418-2.539 0-1.962-2.678-2.077-2.678-2.942zm9.457 5.422L27.16 8.172h-1.652a.858.858 0 00-.798.577l-2.848 6.924h1.994l.398-1.096h2.45l.228 1.096h1.766zm-2.905-5.482l.57 2.827h-1.596l1.026-2.827z" />
-                                                        </svg>
+
+                                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 uppercase"> {{$paymentInfo['brand']}} </span>
                                                         <div class="mt-3 sm:mt-0 sm:ml-4">
-                                                            <div class="text-sm font-medium text-gray-900">Ending with
-                                                                4242</div>
-                                                            <div
-                                                                class="mt-1 text-sm text-gray-600 sm:flex sm:items-center">
-                                                                <div>Expires 12/20</div>
-                                                                <span class="hidden sm:mx-2 sm:inline"
-                                                                    aria-hidden="true">&middot;</span>
-                                                                <div class="mt-1 sm:mt-0">Last updated on 22 Aug 2017
-                                                                </div>
+                                                            <div class="text-sm font-medium text-gray-900">Ending with {{$paymentInfo['last4']}}</div>
+                                                            <div class="mt-1 text-sm text-gray-600 sm:flex sm:items-center">
+                                                                <div>Expires {{$paymentInfo['exp_month']}}/{{$paymentInfo['exp_year']}}</div>
+                                                                <span class="hidden sm:mx-2 sm:inline" aria-hidden="true"> · </span>
+                                                                <div class="mt-1 sm:mt-0">Paid on {{$attendee->ticket->paid_on->format('M d, Y')}}</div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="mt-4 sm:mt-0 sm:ml-6 sm:flex-shrink-0 hidden">
-                                                        <button type="button"
-                                                            class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm">Refund</button>
+                                                    <div class="mt-4 sm:mt-0 sm:ml-6 sm:flex-shrink-0">
+                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800"> PAID </span>
                                                     </div>
                                                 </div>
                                             </div>
+                                            @endif
+                                            @if($attendee->ticket->payment_type == "cash")
+                                            <div class="mt-5">
+                                                <div class="rounded-md bg-gray-50 px-6 py-5 sm:flex sm:items-start sm:justify-between">
+                                                    <div class="sm:flex sm:items-start">
+
+                                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 uppercase"> CASH </span>
+                                                        <div class="mt-3 sm:mt-0 sm:ml-4">
+                                                            <div class="text-sm font-medium text-gray-900">Cash Payment</div>
+                                                            <div class="mt-1 text-sm text-gray-600 sm:flex sm:items-center">
+                                                                @if($attendee->ticket->paid_on != null)
+                                                                <div class="mt-1 sm:mt-0">Paid on {{$attendee->ticket->paid_on->format('M d, Y')}}</div>
+                                                                @else
+                                                                <div class="mt-1 sm:mt-0">Pending Payment</div>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mt-4 sm:mt-0 sm:ml-6 sm:flex-shrink-0">
+                                                        @if($attendee->ticket->paid_on != null)
+                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800"> PAID </span>
+                                                        @else
+                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-red-100 text-red-800"> PENDING PAYMENT </span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endif
                                         </div>
-
-
 
                                         <div class="sm:col-span-2">
                                             <h3 class="text-lg font-medium leading-6 text-gray-900">Event Log</h3>

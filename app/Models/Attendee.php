@@ -19,6 +19,11 @@ class Attendee extends Model
         'event_id'
     ];
 
+    protected $casts = [
+        'checked_in' => 'datetime',
+        'checked_out' => 'datetime',
+    ];
+
     /**
      * Get the ticket for the attendee
      * @return HasOne
@@ -35,6 +40,10 @@ class Attendee extends Model
         return $this->belongsTo(Attendee::class, 'guest_id');
     }
 
+    public function isGuest() {
+        return $this->primary != null ? true : false;
+    }
+
     /**
      * Get the attendees primary attendee
      * @return HasOne
@@ -42,5 +51,18 @@ class Attendee extends Model
     public function primary() : HasOne {
         return $this->hasOne(Attendee::class, 'guest_id', 'id');
     }
+
+    public function getDateCheckedInAttribute() {
+        return $this->checked_in != NULL ? $this->checked_in->format('F d, Y h:i:s A') : 'N/A';
+    }
+
+    public function getDateCheckedOutAttribute() {
+        return $this->checked_out != NULL ? $this->checked_out->format('F d, Y h:i:s A') : 'N/A';
+    }
+
+    public function getGuestNameAttribute() {
+        return $this->guest != NULL ? $this->guest->first_name . ' ' . $this->guest->last_name : null;
+    }
+
 }
 

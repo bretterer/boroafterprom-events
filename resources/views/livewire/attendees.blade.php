@@ -27,13 +27,11 @@
                             </thead>
                             <tbody class="divide-y divide-gray-200 bg-white">
                                 @foreach($attendees as $attendee)
-                                <tr>
-                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                        <a href="#" @click.prevent="Livewire.emit('setCurrentAttendee', '{{ $attendee->id }}')">{{ $attendee->first_name }} {{ $attendee->last_name }}</a>
-                                    </td>
+                                <tr class="cursor-pointer" @click.prevent="Livewire.emit('setCurrentAttendee', '{{ $attendee->id }}')">
+                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ $attendee->first_name }} {{ $attendee->last_name }}</td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $attendee->email }}</td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $attendee->phone }}</td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">#1URZX248</td>
+                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">#{{ explode('-', $attendee->ticket->uuid)[0] }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
