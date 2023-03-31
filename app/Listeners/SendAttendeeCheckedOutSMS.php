@@ -3,8 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\AttendeeCheckedOut;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendAttendeeCheckedOutSMS
 {
@@ -26,6 +27,18 @@ class SendAttendeeCheckedOutSMS
      */
     public function handle(AttendeeCheckedOut $event)
     {
-        //
+        $sid = config('services.twilio.account_sid');
+        $token = config('services.twilio.auth_token');
+        $twilio = new Client($sid, $token);
+
+        $message = $twilio->messages
+                        ->create($event->attendee->phone, // to
+                                [
+                                    "body" => "{$event->attendee->first_name} {$event->attendee->last_name} has left the 2023 Boro Afterprom. They will not be allowed to re-enter the event.",
+                                    "from" => "+19378064759"
+                                ]
+                        );
+
+        Log::debug('Check Out Attendee ' . $event->attendee->phone);
     }
 }

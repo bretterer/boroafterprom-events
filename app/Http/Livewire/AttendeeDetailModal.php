@@ -2,10 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
-use App\Models\Attendee;
-use Twilio\Rest\Client;
 use Stripe\Charge;
+use Livewire\Component;
+use Twilio\Rest\Client;
+use App\Models\Attendee;
+use App\Events\AttendeeCheckedIn;
+use App\Events\AttendeeCheckedOut;
 
 class AttendeeDetailModal extends Component
 {
@@ -56,17 +58,19 @@ class AttendeeDetailModal extends Component
         $this->attendee->checked_in = now();
         $this->attendee->save();
 
-        $sid = config('services.twilio.account_sid');
-        $token = config('services.twilio.auth_token');
-        $twilio = new Client($sid, $token);
+        AttendeeCheckedIn::dispatch($this->attendee);
 
-        $message = $twilio->messages
-                        ->create($this->attendee->phone, // to
-                                [
-                                    "body" => "{$this->attendee->first_name} {$this->attendee->last_name} has checked into the 2023 Boro Afterprom. We will message you again if they leave early.",
-                                    "from" => "+19378064759"
-                                ]
-                        );
+        // $sid = config('services.twilio.account_sid');
+        // $token = config('services.twilio.auth_token');
+        // $twilio = new Client($sid, $token);
+
+        // $message = $twilio->messages
+        //                 ->create($this->attendee->phone, // to
+        //                         [
+        //                             "body" => "{$this->attendee->first_name} {$this->attendee->last_name} has checked into the 2023 Boro Afterprom. We will message you again if they leave early.",
+        //                             "from" => "+19378064759"
+        //                         ]
+        //                 );
     }
 
     public function checkOut()
@@ -74,17 +78,20 @@ class AttendeeDetailModal extends Component
         $this->attendee->checked_out = now();
         $this->attendee->save();
 
-        $sid = config('services.twilio.account_sid');
-        $token = config('services.twilio.auth_token');
-        $twilio = new Client($sid, $token);
+        AttendeeCheckedOut::dispatch($this->attendee);
 
-        $message = $twilio->messages
-                        ->create($this->attendee->phone, // to
-                                [
-                                    "body" => "{$this->attendee->first_name} {$this->attendee->last_name} has left the 2023 Boro Afterprom. They will not be allowed to re-enter the event.",
-                                    "from" => "+19378064759"
-                                ]
-                        );
+
+        // $sid = config('services.twilio.account_sid');
+        // $token = config('services.twilio.auth_token');
+        // $twilio = new Client($sid, $token);
+
+        // $message = $twilio->messages
+        //                 ->create($this->attendee->phone, // to
+        //                         [
+        //                             "body" => "{$this->attendee->first_name} {$this->attendee->last_name} has left the 2023 Boro Afterprom. They will not be allowed to re-enter the event.",
+        //                             "from" => "+19378064759"
+        //                         ]
+        //                 );
     }
 
     public function markPaid()

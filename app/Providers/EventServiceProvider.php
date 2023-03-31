@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use App\Events\AttendeeCheckedIn;
+use App\Events\AttendeeCheckedOut;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
+use App\Listeners\SendAttendeeCheckedInSMS;
+use App\Listeners\SendAttendeeCheckedOutSMS;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
