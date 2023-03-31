@@ -82,7 +82,7 @@
                                                     Mark Paid
                                                 </button>
                                                 @else
-                                                @if($attendee->ticket->payment_type="cash")
+                                                @if($attendee->ticket->payment_type=="cash")
                                                 <button
                                                     wire:click.prevent="markUnpaid"
                                                     class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
@@ -90,7 +90,7 @@
                                                 </button>
                                                 @else
                                                 <button disabled
-                                                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                                    class="bg-green-500 text-white font-bold py-2 px-4 rounded">
                                                     Paid
                                                 </button>
                                                 @endif
@@ -125,6 +125,7 @@
                                         @endif
                                         <div class="sm:col-span-2">
                                             <h3 class="text-lg font-medium leading-6 text-gray-900">Payment method</h3>
+
                                             @if($attendee->ticket->payment_type != "cash" && $attendee->ticket->payment_type != null && $paymentInfo != null)
                                             <div class="mt-5">
                                                 <div class="rounded-md bg-gray-50 px-6 py-5 sm:flex sm:items-start sm:justify-between">

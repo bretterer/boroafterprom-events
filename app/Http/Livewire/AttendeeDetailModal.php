@@ -28,10 +28,11 @@ class AttendeeDetailModal extends Component
 
     public function setCurrentAttendee(Attendee $attendee)
     {
-        $this->attendee = $attendee->loadMissing('ticket');
+        $this->attendee = $attendee->fresh(['ticket']);
 
 
         $ticket = $this->attendee->ticket;
+
 
         if($ticket->payment_id != null) {
             $stripe = new \Stripe\StripeClient(config('services.stripe.secret_key'));
@@ -60,17 +61,6 @@ class AttendeeDetailModal extends Component
 
         AttendeeCheckedIn::dispatch($this->attendee);
 
-        // $sid = config('services.twilio.account_sid');
-        // $token = config('services.twilio.auth_token');
-        // $twilio = new Client($sid, $token);
-
-        // $message = $twilio->messages
-        //                 ->create($this->attendee->phone, // to
-        //                         [
-        //                             "body" => "{$this->attendee->first_name} {$this->attendee->last_name} has checked into the 2023 Boro Afterprom. We will message you again if they leave early.",
-        //                             "from" => "+19378064759"
-        //                         ]
-        //                 );
     }
 
     public function checkOut()
@@ -80,18 +70,6 @@ class AttendeeDetailModal extends Component
 
         AttendeeCheckedOut::dispatch($this->attendee);
 
-
-        // $sid = config('services.twilio.account_sid');
-        // $token = config('services.twilio.auth_token');
-        // $twilio = new Client($sid, $token);
-
-        // $message = $twilio->messages
-        //                 ->create($this->attendee->phone, // to
-        //                         [
-        //                             "body" => "{$this->attendee->first_name} {$this->attendee->last_name} has left the 2023 Boro Afterprom. They will not be allowed to re-enter the event.",
-        //                             "from" => "+19378064759"
-        //                         ]
-        //                 );
     }
 
     public function markPaid()
