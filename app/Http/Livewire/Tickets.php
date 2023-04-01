@@ -7,6 +7,7 @@ use Stripe\Stripe;
 use App\Models\Ticket;
 use Livewire\Component;
 use App\Models\Attendee;
+use App\Events\LogActivity;
 use Illuminate\Support\Facades\Log;
 use Stripe\Exception\CardException;
 use Illuminate\Support\Facades\Mail;
@@ -23,11 +24,13 @@ class Tickets extends Component
     public $first_name;
     public $last_name;
     public $email;
+    public $parent_email;
     public $phone;
     public $guest_first_name;
     public $guest_last_name;
     public $guest_email;
     public $guest_phone;
+    public $guest_parent_email;
     public $confirmation;
 
     public $primaryAttendeeData;
@@ -53,12 +56,15 @@ class Tickets extends Component
         $primaryTicket = $this->primaryAttendee->ticket;
         $primaryTicket->payment_type = "cash";
         $primaryTicket->save();
+        LogActivity::dispatch('Ticket Purchased with Cash', 'money', $this->primaryAttendee);
 
         if($this->hasGuest) {
             $guestTicket = $this->guestAttendee->ticket;
             $guestTicket->payment_type = "cash";
             $guestTicket->save();
+            LogActivity::dispatch('Ticket Purchased with Cash', 'money', $this->guestAttendee);
         }
+
 
         Mail::to($this->primaryAttendee->email)->send(new TicketConfirmationEmail($this->primaryAttendee, null));
         return redirect(route('tickets.success', ['ticketId' => explode('-', $primaryTicket->uuid)[0]]));
@@ -85,6 +91,7 @@ class Tickets extends Component
             $primaryTicket->payment_type = $charge->source->brand;
             $primaryTicket->payment_id = $charge->id;
             $primaryTicket->save();
+            LogActivity::dispatch('Ticket Purchased with Card', 'money', $this->primaryAttendee);
 
             if($this->hasGuest) {
                 $guestTicket = $this->guestAttendee->ticket;
@@ -92,6 +99,7 @@ class Tickets extends Component
                 $guestTicket->payment_type = $charge->source->brand;
                 $guestTicket->payment_id = $charge->id;
                 $guestTicket->save();
+                LogActivity::dispatch('Ticket Purchased with Card', 'money', $this->primaryAttendee);
             }
 
             Mail::to($this->primaryAttendee->email)->send(new TicketConfirmationEmail($this->primaryAttendee, $charge));
@@ -116,6 +124,7 @@ class Tickets extends Component
             'last_name' => 'required',
             'email' => 'required|email',
             'phone' => 'required',
+            'parent_email' => 'required|email',
             'confirmation' => 'required',
         ]);
 
@@ -124,6 +133,7 @@ class Tickets extends Component
                 'guest_first_name' => 'required',
                 'guest_last_name' => 'required',
                 'guest_email' => 'nullable|email',
+                'guest_parent_email' => 'required|email',
                 'guest_phone' => 'required',
             ]);
         }
@@ -138,6 +148,7 @@ class Tickets extends Component
             'last_name' => $this->primaryAttendeeData['last_name'],
             'email' => $this->primaryAttendeeData['email'],
             'phone' => $this->primaryAttendeeData['phone'],
+            'parent_email' => $this->primaryAttendeeData['parent_email'],
             'event_id' => '1',
         ]);
 
@@ -151,6 +162,7 @@ class Tickets extends Component
                 'last_name' => $this->guestAttendeeData['guest_last_name'],
                 'email' => $this->guestAttendeeData['guest_email'],
                 'phone' => $this->guestAttendeeData['guest_phone'],
+                'parent_email' => $this->guestAttendeeData['guest_parent_email'],
                 'event_id' => '1',
             ]);
 

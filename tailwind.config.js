@@ -8,7 +8,9 @@ module.exports = {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
     ],
-
+    safelist: [
+		"bg-orange-600",
+    ],
     theme: {
         extend: {
             fontFamily: {

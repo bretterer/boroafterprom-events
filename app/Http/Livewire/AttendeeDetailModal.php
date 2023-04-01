@@ -5,7 +5,9 @@ namespace App\Http\Livewire;
 use Stripe\Charge;
 use Livewire\Component;
 use Twilio\Rest\Client;
+use App\Models\Activity;
 use App\Models\Attendee;
+use App\Events\LogActivity;
 use App\Events\AttendeeCheckedIn;
 use App\Events\AttendeeCheckedOut;
 
@@ -28,8 +30,7 @@ class AttendeeDetailModal extends Component
 
     public function setCurrentAttendee(Attendee $attendee)
     {
-        $this->attendee = $attendee->fresh(['ticket']);
-
+        $this->attendee = $attendee->fresh(['ticket', 'activityLog']);
 
         $ticket = $this->attendee->ticket;
 
@@ -59,6 +60,9 @@ class AttendeeDetailModal extends Component
         $this->attendee->checked_in = now();
         $this->attendee->save();
 
+        $this->attendee = $this->attendee->fresh(['ticket', 'activityLog']);
+
+        LogActivity::dispatch('Checked In', 'check', $this->attendee);
         AttendeeCheckedIn::dispatch($this->attendee);
 
     }
@@ -68,6 +72,9 @@ class AttendeeDetailModal extends Component
         $this->attendee->checked_out = now();
         $this->attendee->save();
 
+        $this->attendee = $this->attendee->fresh(['ticket', 'activityLog']);
+
+        LogActivity::dispatch('Checked Out', 'checkRed', $this->attendee);
         AttendeeCheckedOut::dispatch($this->attendee);
 
     }
@@ -81,6 +88,8 @@ class AttendeeDetailModal extends Component
             $this->attendee->guest->ticket->paid_on = now();
             $this->attendee->guest->ticket->save();
         }
+
+        LogActivity::dispatch('Marked as Paid', 'cash', $this->attendee);
     }
 
     public function markUnpaid()
@@ -92,5 +101,7 @@ class AttendeeDetailModal extends Component
             $this->attendee->guest->ticket->paid_on = null;
             $this->attendee->guest->ticket->save();
         }
+
+        LogActivity::dispatch('Marked as Unpaid', 'cash', $this->attendee);
     }
 }

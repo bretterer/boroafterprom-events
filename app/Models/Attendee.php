@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Activity;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Attendee extends Model
 {
@@ -15,6 +16,7 @@ class Attendee extends Model
         'first_name',
         'last_name',
         'email',
+        'parent_email',
         'phone',
         'event_id'
     ];
@@ -42,6 +44,10 @@ class Attendee extends Model
 
     public function isGuest() {
         return $this->primary != null ? true : false;
+    }
+
+    public function activityLog() {
+        return $this->hasMany(Activity::class)->orderBy('created_at', 'desc');
     }
 
     /**

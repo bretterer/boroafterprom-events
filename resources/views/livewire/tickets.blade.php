@@ -66,6 +66,16 @@
                         <span class="text-red-500">{{ $errors->first('phone') }}</span>
                         @endif
                     </div>
+
+                    <div class="sm:col-span-2">
+                        <label for="parent_email" class="block text-sm font-medium text-gray-700">Parent/Guardian Email</label>
+                        <div class="mt-1">
+                            <input wire:model="parent_email" type="text" name="parent_email" id="parent_email" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                        @if($errors->has('parent_email'))
+                        <span class="text-red-500">{{ $errors->first('parent_email') }}</span>
+                        @endif
+                    </div>
                 </div>
 
             </div>
@@ -81,7 +91,7 @@
                     </div>
                     <div class="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
                         <div>
-                            <label for="guest_first_name" class="block text-sm font-medium text-gray-700">First name</label>
+                            <label for="guest_first_name" class="block text-sm font-medium text-gray-700">Guest First name</label>
                             <div class="mt-1">
                                 <input wire:model="guest_first_name" type="text" id="guest-guest_first_name" name="guest_first_name" autocomplete="given-name" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                             </div>
@@ -91,7 +101,7 @@
                         </div>
 
                         <div>
-                            <label for="guest_last_name" class="block text-sm font-medium text-gray-700">Last name</label>
+                            <label for="guest_last_name" class="block text-sm font-medium text-gray-700">Guest Last name</label>
                             <div class="mt-1">
                                 <input wire:model="guest_last_name" type="text" id="guest_last_name" name="guest_last_name" autocomplete="family-name" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                             </div>
@@ -102,7 +112,7 @@
 
                         <div class="sm:col-span-2">
                             <div class="flex justify-between">
-                                <label for="guest_email" class="block text-sm font-medium text-gray-700">Email</label>
+                                <label for="guest_email" class="block text-sm font-medium text-gray-700">Guest Email</label>
                                 <span class="text-sm text-gray-500" id="email-optional">(Optional)</span>
                             </div>
                             <div class="mt-1">
@@ -114,7 +124,7 @@
                         </div>
 
                         <div class="sm:col-span-2">
-                            <label for="guest_phone" class="block text-sm font-medium text-gray-700">Parent/Guardian Phone Number</label>
+                            <label for="guest_phone" class="block text-sm font-medium text-gray-700">Guest Parent/Guardian Phone Number</label>
                             <div class="mt-1">
                                 <input wire:model="guest_phone" type="text" name="guest_phone" id="guest_phone" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                             </div>
@@ -122,6 +132,17 @@
                             <span class="text-red-500">{{ $errors->first('guest_phone') }}</span>
                             @endif
                         </div>
+
+                        <div class="sm:col-span-2">
+                            <label for="guest_parent_email" class="block text-sm font-medium text-gray-700">Guest Parent/Guardian Email</label>
+                            <div class="mt-1">
+                                <input wire:model="guest_parent_email" type="text" name="guest_parent_email" id="guest_parent_email" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            </div>
+                            @if($errors->has('guest_parent_email'))
+                            <span class="text-red-500">{{ $errors->first('guest_parent_email') }}</span>
+                            @endif
+                        </div>
+
 
                     </div>
                 </div>
