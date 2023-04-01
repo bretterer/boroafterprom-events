@@ -151,9 +151,11 @@
 
                                 <div x-show="profileMenuOpen" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" x-ref="menu-items" x-description="Dropdown menu, show/hide based on menu state." role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1" style="display: none;">
 
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700" x-state:on="Active" x-state:off="Not Active" role="menuitem" tabindex="-1" id="user-menu-item-0" @click="profileMenuOpen = false;">Your Profile</a>
-
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1" @click="profileMenuOpen = false;">Sign out</a>
+                                    <a href="#" class="hidden block px-4 py-2 text-sm text-gray-700" x-state:on="Active" x-state:off="Not Active" role="menuitem" tabindex="-1" id="user-menu-item-0" @click="profileMenuOpen = false;">Your Profile</a>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button class="block px-4 py-2 text-sm text-gray-700" type="submit" @click="profileMenuOpen = false;">Sign out</button>
+                                    </form>
 
                                 </div>
 
