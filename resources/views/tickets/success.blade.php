@@ -12,11 +12,12 @@
                     <div class="mt-3 text-center sm:mt-5">
                         <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Order successful</h3>
                         <div class="mt-2 ">
-                            <p class="text-lg text-gray-500">THIS IS NOT YOUR TICKET!</p>
-                            <p class="text-sm text-gray-500">Pickup will happen at lunch <span class="font-bold text-xl">April 21</span> and <span class="font-bold text-xl">April 22</span> at lunch, Please take a screenshot of this page for your ticket pickup!</p>
+                            <p class="text-lg text-gray-500 mb-6">THIS IS YOUR TICKET CONFIRMATION!</p>
+                            <p class="text-sm text-gray-500 mb-4"> There will be no physical ticket this year however, one will be emailed to you closer to the event. Please take a screenshot or save the email for checking in at the event.</p>
                             @if($attendee->ticket->payment_type == "cash")
-                            <p class="text-sm text-gray-500">You chose to pay with cash, Please bring cash with you to lunch one of these days.</p>
+                            <p class="text-sm text-gray-500">You chose to pay with cash, Please bring a screenshot of this and cash with you to lunch <br/>on <span class="font-bold text-xl">April 14</span> or <span class="font-bold text-xl">April 15</span> to compete your registration!</p>
                             @endif
+
                         </div>
 
                         <div class="mt-2">
