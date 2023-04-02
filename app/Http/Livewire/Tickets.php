@@ -160,7 +160,7 @@ class Tickets extends Component
             $this->guestAttendee = Attendee::create([
                 'first_name' => $this->guestAttendeeData['guest_first_name'],
                 'last_name' => $this->guestAttendeeData['guest_last_name'],
-                'email' => $this->guestAttendeeData['guest_email'],
+                'email' => $this->guestAttendeeData['guest_email'] == null ? " ": $this->guestAttendeeData['guest_email'],
                 'phone' => $this->guestAttendeeData['guest_phone'],
                 'parent_email' => $this->guestAttendeeData['guest_parent_email'],
                 'event_id' => '1',
