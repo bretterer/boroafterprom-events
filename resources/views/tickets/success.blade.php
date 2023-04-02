@@ -15,7 +15,7 @@
                             <p class="text-lg text-gray-500 mb-6">THIS IS YOUR TICKET CONFIRMATION!</p>
                             <p class="text-sm text-gray-500 mb-4"> There will be no physical ticket this year however, one will be emailed to you closer to the event. Please take a screenshot or save the email for checking in at the event.</p>
                             @if($attendee->ticket->payment_type == "cash")
-                            <p class="text-sm text-gray-500">You chose to pay with cash, Please bring a screenshot of this and cash with you to lunch <br/>on <span class="font-bold text-xl">April 14</span> or <span class="font-bold text-xl">April 15</span> to compete your registration!</p>
+                            <p class="text-sm text-gray-500">You chose to pay with cash, Please bring a screenshot of this and cash with you to lunch <br/>on <span class="font-bold text-xl">April 13</span> or <span class="font-bold text-xl">April 14</span> to compete your registration!</p>
                             @endif
 
                         </div>
