@@ -37,7 +37,7 @@
                             <div class="bg-white shadow sm:rounded-lg">
                                 <div class="flex items-center">
                                     <div class="flex-1 px-4 py-5 sm:px-6">
-                                        <h2 id="applicant-information-title"
+                                        <h2 id="attendee-name"
                                             class="text-lg font-medium leading-6 text-gray-900">{{ $attendee->first_name }} {{ $attendee->last_name }}</h2>
                                         <p class="mt-1 max-w-2xl text-sm text-gray-500">{{ $attendee->email }}</p>
                                     </div>
@@ -123,6 +123,28 @@
                                             </dd>
                                         </div>
                                         @endif
+
+                                        <div class="sm:col-span-2">
+                                            <dt class="text-sm font-medium text-gray-500">Utilities</dt>
+                                            <dd class="mt-1 text-sm text-gray-900 flex flex-col">
+                                                <span></span>
+                                                <button
+                                                    @click="printLabels"
+                                                    class="bg-boro-500 hover:bg-boro-700 text-white font-bold py-2 px-4 rounded">
+                                                    Print Labels
+                                                </button>
+                                            </dd>
+                                            <dd class="mt-1 text-sm text-gray-900 flex flex-col">
+                                                <span></span>
+                                                <button
+                                                    wire:click.prevent="resendTicket"
+                                                    class="bg-boro-500 hover:bg-boro-700 text-white font-bold py-2 px-4 rounded">
+                                                    Resend Ticket
+                                                </button>
+                                            </dd>
+                                        </div>
+
+
                                         <div class="sm:col-span-2">
                                             <h3 class="text-lg font-medium leading-6 text-gray-900">Payment method</h3>
 
@@ -353,5 +375,99 @@
             </div>
         </div>
 
+        <script src="{{ Vite::asset('resources/js/dymo.js') }}"></script>
+        <script>
+            function printLabels() {
+                var attendee = document.getElementById('attendee-name').innerText;
+                var labelXml = '<?xml version="1.0" encoding="utf-8"?>\
+<DieCutLabel Version="8.0" Units="twips" MediaType="Default">\
+  <PaperOrientation>Portrait</PaperOrientation>\
+  <Id>Small30333</Id>\
+  <PaperName>30333 1/2 in x 1 in (2 up)</PaperName>\
+  <DrawCommands>\
+    <Path>\
+      <RoundRectangle X="0" Y="0" Width="720" Height="1440" Rx="180" Ry="180"/>\
+      <RoundRectangle X="720" Y="0" Width="720" Height="1440" Rx="180" Ry="180"/>\
+    </Path>\
+  </DrawCommands>\
+  <ObjectInfo>\
+    <TextObject>\
+      <Name>NAME</Name>\
+      <ForeColor Alpha="255" Red="0" Green="0" Blue="0"/>\
+      <BackColor Alpha="0" Red="255" Green="255" Blue="255"/>\
+      <LinkedObjectName></LinkedObjectName>\
+      <Rotation>Rotation90</Rotation>\
+      <IsMirrored>False</IsMirrored>\
+      <IsVariable>False</IsVariable>\
+      <HorizontalAlignment>Left</HorizontalAlignment>\
+      <VerticalAlignment>Middle</VerticalAlignment>\
+      <TextFitMode>AlwaysFit</TextFitMode>\
+      <UseFullFontHeight>True</UseFullFontHeight>\
+      <Verticalized>False</Verticalized>\
+      <StyledText>\
+        <Element>\
+          <String>ATTENDEE</String>\
+          <Attributes>\
+            <Font Family="Helvetica" Size="13" Bold="False" Italic="False" Underline="False" Strikeout="False"/>\
+            <ForeColor Alpha="255" Red="0" Green="0" Blue="0"/>\
+          </Attributes>\
+        </Element>\
+      </StyledText>\
+    </TextObject>\
+    <Bounds X="-300" Y="134.4" Width="1300.8" Height="1219.2"/>\
+  </ObjectInfo>\
+  <ObjectInfo>\
+    <TextObject>\
+      <Name>NAME2</Name>\
+      <ForeColor Alpha="255" Red="0" Green="0" Blue="0"/>\
+      <BackColor Alpha="0" Red="255" Green="255" Blue="255"/>\
+      <LinkedObjectName></LinkedObjectName>\
+      <Rotation>Rotation90</Rotation>\
+      <IsMirrored>False</IsMirrored>\
+      <IsVariable>False</IsVariable>\
+      <HorizontalAlignment>Left</HorizontalAlignment>\
+      <VerticalAlignment>Middle</VerticalAlignment>\
+      <TextFitMode>AlwaysFit</TextFitMode>\
+      <UseFullFontHeight>True</UseFullFontHeight>\
+      <Verticalized>False</Verticalized>\
+      <StyledText>\
+        <Element>\
+          <String>ATTENDEE</String>\
+          <Attributes>\
+            <Font Family="Helvetica" Size="13" Bold="False" Italic="False" Underline="False" Strikeout="False"/>\
+            <ForeColor Alpha="255" Red="0" Green="0" Blue="0"/>\
+          </Attributes>\
+        </Element>\
+      </StyledText>\
+    </TextObject>\
+    <Bounds X="300" Y="134.4" Width="1300.8" Height="1219.2"/>\
+  </ObjectInfo>\
+</DieCutLabel>';
 
+                label = dymo.label.framework.openLabelXml(labelXml);
+                label.setObjectText("NAME", attendee);
+                label.setObjectText("NAME2", attendee);
+
+                var printers = dymo.label.framework.getPrinters();
+                if (printers.length == 0)
+                    throw "No DYMO printers are installed. Install DYMO printers.";
+
+                var printerName = "";
+                for (var i = 0; i < printers.length; ++i)
+                {
+                    var printer = printers[i];
+                    if (printer.printerType == "LabelWriterPrinter")
+                    {
+                        printerName = printer.name;
+                        break;
+                    }
+                }
+
+                if (printerName == "")
+                    throw "No LabelWriter printers found. Install LabelWriter printer";
+
+                label.print(printerName, dymo.label.framework.createLabelWriterPrintParamsXml({copies: 1, printQuality: "Text"}));
+
+            }
+        </script>
     </div>

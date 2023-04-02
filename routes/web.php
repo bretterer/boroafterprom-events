@@ -20,6 +20,10 @@ Route::get('/', function () {
     return redirect('https://boroafterprom.com');
 });
 
+Route::get('/test', function() {
+    return view('tickets.ticket');
+});
+
 Route::get('/tickets', function () {
     return view('tickets');
 });

@@ -7,9 +7,11 @@ use Livewire\Component;
 use Twilio\Rest\Client;
 use App\Models\Activity;
 use App\Models\Attendee;
+use App\Mail\EventTicket;
 use App\Events\LogActivity;
 use App\Events\AttendeeCheckedIn;
 use App\Events\AttendeeCheckedOut;
+use Illuminate\Support\Facades\Mail;
 
 class AttendeeDetailModal extends Component
 {
@@ -103,5 +105,15 @@ class AttendeeDetailModal extends Component
         }
 
         LogActivity::dispatch('Marked as Unpaid', 'cash', $this->attendee);
+    }
+
+    public function resendTicket()
+    {
+        Mail::to($this->attendee->email)->send(new EventTicket($this->attendee));
+    }
+
+    public function getAttendeeName()
+    {
+        return "{{$this->attendee->first_name}} {{$this->attendee->last_name}}";
     }
 }
