@@ -45,7 +45,7 @@
 <br><br>
 <strong>Pending Payment</strong>
 <br><br>
-Please pay at lunch April 13 or April 14
+You chose to pay with cash, Please bring a screenshot of this and cash with you to lunch <br/>on <span class="font-bold text-xl">April 13</span> or <span class="font-bold text-xl">April 14</span> to compete your registration!
 <br><br>
 @endif
 
