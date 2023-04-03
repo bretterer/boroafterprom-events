@@ -61,7 +61,7 @@ class TicketConfirmationEmail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'tickets.success',
+            view: 'emails.confirmation',
         );
     }
 

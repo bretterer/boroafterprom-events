@@ -20,8 +20,21 @@ Route::get('/', function () {
     return redirect('https://boroafterprom.com');
 });
 
-Route::get('/test', function() {
-    return view('tickets.ticket');
+Route::get('/test', function(Request $request) {
+    $ticketId = $request->get('ticketId');
+    $chargeInfo = null;
+
+    $ticket = Ticket::with('attendee')->where('uuid', 'like', $ticketId . '-%')->firstOrFail();
+
+    if($ticket->payment_id != null) {
+        $stripe = new \Stripe\StripeClient(config('services.stripe.secret_key'));
+
+        $chargeInfo = $stripe->charges->retrieve($ticket->payment_id);
+    }
+    if($request->get('sendTicket')){
+        Mail::to('bretterer@gmail.com')->send(new TicketConfirmationEmail($ticket->attendee, $chargeInfo));
+    }
+    return new App\Mail\TicketConfirmationEmail($ticket->attendee, $chargeInfo);
 });
 
 Route::get('/tickets', function () {
