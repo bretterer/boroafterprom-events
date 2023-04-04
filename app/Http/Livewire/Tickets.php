@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Stripe\Charge;
 use Stripe\Stripe;
+use Stripe\Customer;
 use App\Models\Ticket;
 use Livewire\Component;
 use App\Models\Attendee;
@@ -18,6 +19,7 @@ class Tickets extends Component
     public $ticketCount = 1;
     public $ticketCost = 10;
     public $hasGuest = false;
+    public $buttonText = "Continue";
     public $paymentToken;
     public $totalCost;
 
@@ -72,6 +74,7 @@ class Tickets extends Component
 
     public function payCard()
     {
+        $this->buttonText = "Please Wait...";
         Stripe::setApiKey(config('services.stripe.secret_key'));
 
         $this->totalCost = $this->ticketCost * $this->ticketCount;
@@ -79,11 +82,28 @@ class Tickets extends Component
         $this->create();
 
         try {
+            $customerSearch = Customer::search(['query' => "email:'{{$this->primaryAttendee->email}}'", 'limit'=> '1']);
+
+            if(count($customerSearch) > 0) {
+                $customer = $customerSearch->data[0];
+            } else {
+                $customer = Customer::create([
+                    'name' => $this->primaryAttendee->first_name . " " . $this->primaryAttendee->last_name,
+                    'phone' => $this->primaryAttendee->phone,
+                    'email' => $this->primaryAttendee->email,
+                ]);
+            }
+
+            $customerSource = Customer::createSource(
+                $customer->id,
+                ['source' => $this->paymentToken]
+            );
+
             $charge = Charge::create([
                 'amount' => $this->totalCost * 100,
                 'currency' => 'usd',
                 'description' => 'Boro Afterprom Tickets 2023',
-                'source' => $this->paymentToken,
+                'customer' => $customer->id,
             ]);
 
             $primaryTicket = $this->primaryAttendee->ticket;
@@ -105,13 +125,13 @@ class Tickets extends Component
             Mail::to($this->primaryAttendee->email)->send(new TicketConfirmationEmail($this->primaryAttendee, $charge));
             return redirect(route('tickets.success', ['ticketId' => explode('-', $primaryTicket->uuid)[0]]));
         }
-        catch (CardException $ce) {
+        catch (\Exception $ce) {
             $this->primaryAttendee->delete();
 
             if($this->hasGuest) {
                 $this->guestAttendee->delete();
             }
-
+            $this->buttonText = "Continue";
             $errors = $this->getErrorBag();
             $errors->add('paymentErrors', $ce->getMessage());
         }

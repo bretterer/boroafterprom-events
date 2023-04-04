@@ -247,7 +247,7 @@
                 </div>
 
                 <div class="border-t border-gray-200 py-6 px-4 sm:px-6 flex space-x-2">
-                    <button @click="submitOrder" wire:loading.attr="disabled" id="submitOrder" class="w-full bg-blue-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500">Continue</button>
+                    <button @click.prevent="submitOrder" wire:loading.attr="disabled" id="submitOrder" class="w-full bg-blue-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-blue-500">{{$this->buttonText}}</button>
                 </div>
             </div>
         </div>
@@ -258,6 +258,9 @@
     @push('custom-scripts')
         <script>
             function submitOrder() {
+                // origText = document.querySelector('#submitOrder').innerText;
+
+                // document.querySelector('#submitOrder').innerText = "Please Wait...";
 
                 @this.validateInput();
 
@@ -273,6 +276,7 @@
                     },
 
                     function(err) {
+                        // document.querySelector('#submitOrder').innerText = origText;
                         console.log(err);
                     }
                 )
