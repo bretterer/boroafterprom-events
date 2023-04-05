@@ -119,7 +119,7 @@ class Tickets extends Component
                 $guestTicket->payment_type = $charge->source->brand;
                 $guestTicket->payment_id = $charge->id;
                 $guestTicket->save();
-                LogActivity::dispatch('Ticket Purchased with Card', 'money', $this->primaryAttendee);
+                LogActivity::dispatch('Ticket Purchased with Card', 'money', $this->guestAttendee);
             }
 
             Mail::to($this->primaryAttendee->email)->send(new TicketConfirmationEmail($this->primaryAttendee, $charge));
