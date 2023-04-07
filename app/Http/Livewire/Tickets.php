@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Stripe\Exception\CardException;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TicketConfirmationEmail;
+use App\Exceptions\AttendeeCreationExeption;
 
 class Tickets extends Component
 {
@@ -162,7 +163,15 @@ class Tickets extends Component
 
     protected function create()
     {
-
+        if(
+            !array_key_exists('first_name', $this->primaryAttendeeData) ||
+            !array_key_exists('last_name', $this->primaryAttendeeData) ||
+            !array_key_exists('email', $this->primaryAttendeeData) ||
+            !array_key_exists('phone', $this->primaryAttendeeData) ||
+            !array_key_exists('parent_email', $this->primaryAttendeeData)
+        ) {
+            throw AttendeeCreationExeption::for($this->primaryAttendeeData, "primary");
+        }
         $this->primaryAttendee = Attendee::create([
             'first_name' => $this->primaryAttendeeData['first_name'],
             'last_name' => $this->primaryAttendeeData['last_name'],
@@ -177,6 +186,16 @@ class Tickets extends Component
         ]));
 
         if ($this->hasGuest) {
+
+            if(
+                !array_key_exists('guest_first_name', $this->guestAttendeeData) ||
+                !array_key_exists('guest_last_name', $this->guestAttendeeData) ||
+                !array_key_exists('guest_phone', $this->guestAttendeeData) ||
+                !array_key_exists('guest_parent_email', $this->guestAttendeeData)
+            ) {
+                throw AttendeeCreationExeption::for($this->guestAttendeeData, "guest");
+            }
+
             $this->guestAttendee = Attendee::create([
                 'first_name' => $this->guestAttendeeData['guest_first_name'],
                 'last_name' => $this->guestAttendeeData['guest_last_name'],
