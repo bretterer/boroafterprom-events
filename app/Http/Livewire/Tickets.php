@@ -143,7 +143,7 @@ class Tickets extends Component
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email',
-            'phone' => 'required',
+            'phone' => 'required|digits:10',
             'parent_email' => 'required|email',
             'confirmation' => 'required',
         ]);
@@ -154,7 +154,7 @@ class Tickets extends Component
                 'guest_last_name' => 'required',
                 'guest_email' => 'nullable|email',
                 'guest_parent_email' => 'required|email',
-                'guest_phone' => 'required',
+                'guest_phone' => 'required|digits:10',
             ]);
         }
 
