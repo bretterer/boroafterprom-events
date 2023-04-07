@@ -97,14 +97,14 @@ Order Email: <strong>{{$attendee->email}}</strong><br>
 </div>
 
 
-
+@if($attendee->ticket->payment_type != "cash")
     <!-- Card Payment -->
     <h3 style="margin-bottom: 4px;">Payment Details</h3>
 Payment Date: <strong>{{$attendee->ticket->paid_on->format('F j, Y')}}</strong><br>
 Payment Type: <strong>{{strtoupper($paymentInfo->payment_method_details->card->brand)}}</strong><br>
 Ending In: <strong>{{$paymentInfo->payment_method_details->card->last4}}</strong><br>
 Transaction ID: <strong>{{$paymentInfo->id}}</strong><br>
-
+@endif
 <br><br>
 Thank you
 
