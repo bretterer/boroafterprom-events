@@ -1,0 +1,19 @@
+name: 'Deploy to Forge'
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  forge-deploy:
+    name: 'Laravel Forge Deploy'
+    runs-on: ubuntu-latest
+
+    steps:
+      # Trigger Laravel Forge Deploy
+      - name: Deploy
+        uses: jbrooksuk/laravel-forge-action@v1.0.2
+        with:
+          api_key: ${{ secrets.FORGE_API_KEY }}
+          server_id: ${{ secrets.FORGE_SERVER_ID }}
+          site_id: ${{ secrets.FORGE_SITE_ID }}
