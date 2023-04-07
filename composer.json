@@ -12,6 +12,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.11",
+        "marvinlabs/laravel-discord-logger": "^1.4",
         "spatie/laravel-activitylog": "^4.7",
         "stripe/stripe-php": "^7.116",
         "symfony/http-client": "^6.2",
