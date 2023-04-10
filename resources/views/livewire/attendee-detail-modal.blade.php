@@ -3,6 +3,10 @@
         Livewire.on('currentAttendeeSet', () => {
             show = true
         })
+
+        Livewire.on('closeModal', () => {
+            show = false
+        })
         ">
 
 
@@ -142,6 +146,16 @@
                                                     Resend Ticket
                                                 </button>
                                             </dd>
+
+                                            <dd class="mt-1 text-sm text-gray-900 flex flex-col">
+                                                <span></span>
+                                                <button
+                                                    wire:click.prevent="deleteAttendee"
+                                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                                    Delete Attendee
+                                                </button>
+                                            </dd>
+
                                         </div>
 
 
