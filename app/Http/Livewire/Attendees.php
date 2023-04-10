@@ -17,6 +17,8 @@ class Attendees extends Component
 
     protected $queryString = ['search'];
 
+    protected $listeners = ['refreshAttendeeList' => 'refresh'];
+
 
     public function updatingSearch()
     {
@@ -33,6 +35,11 @@ class Attendees extends Component
             'attendees' => $attendees->paginate(50),
             'search' => $this->search,
         ]);
+    }
+
+    public function refresh()
+    {
+        $this->resetPage();
     }
 
 

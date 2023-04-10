@@ -3,6 +3,8 @@
 namespace App\Http\Livewire;
 
 use Stripe\Charge;
+use Stripe\Refund;
+use Stripe\Stripe;
 use Livewire\Component;
 use Twilio\Rest\Client;
 use App\Models\Activity;
@@ -12,6 +14,7 @@ use App\Events\LogActivity;
 use App\Events\AttendeeCheckedIn;
 use App\Events\AttendeeCheckedOut;
 use Illuminate\Support\Facades\Mail;
+use Stripe\Exception\InvalidRequestException;
 
 class AttendeeDetailModal extends Component
 {
@@ -43,12 +46,19 @@ class AttendeeDetailModal extends Component
         if($ticket->payment_id != null) {
             $stripe = new \Stripe\StripeClient(config('services.stripe.secret_key'));
 
-            $charge = $stripe->charges->retrieve($ticket->payment_id);
+            try{
+                $charge = $stripe->charges->retrieve($ticket->payment_id);
 
-            $this->paymentInfo['brand'] = $charge->payment_method_details->card->brand;
-            $this->paymentInfo['last4'] = $charge->payment_method_details->card->last4;
-            $this->paymentInfo['exp_month'] = $charge->payment_method_details->card->exp_month;
-            $this->paymentInfo['exp_year'] = $charge->payment_method_details->card->exp_year;
+                $this->paymentInfo['brand'] = $charge->payment_method_details->card->brand;
+                $this->paymentInfo['last4'] = $charge->payment_method_details->card->last4;
+                $this->paymentInfo['exp_month'] = $charge->payment_method_details->card->exp_month;
+                $this->paymentInfo['exp_year'] = $charge->payment_method_details->card->exp_year;
+            } catch(InvalidRequestException $ire) {
+                $this->paymentInfo['brand'] = 'N/A';
+                $this->paymentInfo['last4'] = 'N/A';
+                $this->paymentInfo['exp_month'] = 'N/A';
+                $this->paymentInfo['exp_year'] = 'N/A';
+            };
         }
 
 
@@ -118,5 +128,53 @@ class AttendeeDetailModal extends Component
     public function getAttendeeName()
     {
         return "{{$this->attendee->first_name}} {{$this->attendee->last_name}}";
+    }
+
+    public function deleteAttendee()
+    {
+
+
+        $attendee = $this->attendee;
+        $guest = null;
+        $primary = null;
+        $charge = null;
+
+
+        if($attendee->isGuest()) {
+            $primary = $attendee->primary;
+            $guest = $attendee;
+        } else {
+            $primary = $attendee;
+        }
+
+        if($primary->guest) {
+            $guest = $primary->guest;
+        }
+
+        if($primary->ticket->payment_type != null && $primary->ticket->payment_type != 'cash') {
+            try{
+                // $stripe = new \Stripe\StripeClient(config('services.stripe.secret_key'));
+                Stripe::setApiKey(config('services.stripe.secret_key'));
+                $charge = Charge::retrieve($this->attendee->ticket->payment_id);
+                // $charge = $stripe->charges->retrieve($this->attendee->ticket->payment_id);
+                $refund = Refund::create([
+                    'charge' => $charge->id,
+                    'amount' => $charge->amount,
+                    'reason' => 'requested_by_customer'
+                ]);
+            } catch(InvalidRequestException $ire) {
+
+            } catch(\Exception $e) {
+
+            }
+        }
+
+        $primary->delete();
+        if($guest != null) {
+            $guest->delete();
+        }
+
+        $this->emitUp('refreshAttendeeList');
+        $this->emit('closeModal');
     }
 }
