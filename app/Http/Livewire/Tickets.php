@@ -21,6 +21,7 @@ class Tickets extends Component
     public $ticketCost = 10;
     public $hasGuest = false;
     public $buttonText = "Continue";
+    public $submitting = false;
     public $paymentToken;
     public $totalCost;
 
@@ -54,6 +55,9 @@ class Tickets extends Component
 
     public function payCash()
     {
+        $this->buttonText = "Please Wait...";
+        $this->submitting = true;
+
         $this->create();
 
         $primaryTicket = $this->primaryAttendee->ticket;
@@ -76,6 +80,7 @@ class Tickets extends Component
     public function payCard()
     {
         $this->buttonText = "Please Wait...";
+        $this->submitting = true;
         Stripe::setApiKey(config('services.stripe.secret_key'));
 
         $this->totalCost = $this->ticketCost * $this->ticketCount;
@@ -140,30 +145,39 @@ class Tickets extends Component
 
     public function validateInput()
     {
-        $this->primaryAttendeeData = $this->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required|digits:10',
-            'parent_email' => 'required|email',
-            'confirmation' => 'required',
-        ]);
-
-        if ($this->hasGuest) {
-            $this->guestAttendeeData = $this->validate([
-                'guest_first_name' => 'required',
-                'guest_last_name' => 'required',
-                'guest_email' => 'nullable|email',
-                'guest_parent_email' => 'required|email',
-                'guest_phone' => 'required|digits:10',
+        try {
+            $this->primaryAttendeeData = $this->validate([
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'email' => 'required|email',
+                'phone' => 'required|digits:10',
+                'parent_email' => 'required|email',
+                'confirmation' => 'required',
             ]);
-        }
 
+            if ($this->hasGuest) {
+                $this->guestAttendeeData = $this->validate([
+                    'guest_first_name' => 'required',
+                    'guest_last_name' => 'required',
+                    'guest_email' => 'nullable|email',
+                    'guest_parent_email' => 'required|email',
+                    'guest_phone' => 'required|digits:10',
+                ]);
+            }
+        } catch (\Exception $exception) {
+            $this->buttonText = "Continue";
+            $this->submitting = false;
+            throw $exception;
+        }
     }
 
     protected function create()
     {
+        if($this->primaryAttendeeData == null) {
+            $this->validateInput();
+        }
         if(
+            $this->primaryAttendeeData == null ||
             !array_key_exists('first_name', $this->primaryAttendeeData) ||
             !array_key_exists('last_name', $this->primaryAttendeeData) ||
             !array_key_exists('email', $this->primaryAttendeeData) ||
@@ -188,6 +202,7 @@ class Tickets extends Component
         if ($this->hasGuest) {
 
             if(
+                $this->guestAttendeeData == null ||
                 !array_key_exists('guest_first_name', $this->guestAttendeeData) ||
                 !array_key_exists('guest_last_name', $this->guestAttendeeData) ||
                 !array_key_exists('guest_phone', $this->guestAttendeeData) ||
@@ -210,6 +225,7 @@ class Tickets extends Component
                 'event_id' => '1'
             ]));
         }
+
     }
 
     public function addGuest()

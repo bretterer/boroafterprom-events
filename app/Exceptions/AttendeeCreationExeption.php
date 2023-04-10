@@ -8,7 +8,7 @@ class AttendeeCreationExeption extends Exception
 {
     protected $attendeeData;
 
-    public static function for(array $attendeeData, string $attendeeType) {
+    public static function for(array|null $attendeeData, string $attendeeType) {
         $instance = new static(
             "Creation of {$attendeeType} attendee failed"
         );
