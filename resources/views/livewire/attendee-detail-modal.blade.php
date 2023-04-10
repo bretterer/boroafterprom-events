@@ -124,15 +124,21 @@
                                         </div>
                                         @endif
 
-                                        <div class="sm:col-span-2">
+                                        <div class="sm:col-span-2 space-y-2">
                                             <dt class="text-sm font-medium text-gray-500">Utilities</dt>
                                             <dd class="mt-1 text-sm text-gray-900 flex flex-col">
                                                 <span></span>
-                                                <button
-                                                    @click="printLabels"
-                                                    class="bg-boro-500 hover:bg-boro-700 text-white font-bold py-2 px-4 rounded">
-                                                    Print Labels
-                                                </button>
+                                                <div class="flex space-x-2 align-middle">
+                                                    <div class="flex rounded-md shadow-sm  align-middle">
+                                                        <span class="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">Quantity:</span>
+                                                        <input type="text" wire:model="labelQty" class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" >
+                                                    </div>
+                                                    <button
+                                                        @click="printLabels"
+                                                        class="flex-1 bg-boro-500 hover:bg-boro-700 text-white font-bold py-2 px-4 rounded">
+                                                        Print Labels
+                                                    </button>
+                                                </div>
                                             </dd>
                                             <dd class="mt-1 text-sm text-gray-900 flex flex-col">
                                                 <span></span>
@@ -398,7 +404,7 @@
       <LinkedObjectName></LinkedObjectName>\
       <Rotation>Rotation90</Rotation>\
       <IsMirrored>False</IsMirrored>\
-      <IsVariable>False</IsVariable>\
+      <IsVariable>True</IsVariable>\
       <HorizontalAlignment>Left</HorizontalAlignment>\
       <VerticalAlignment>Middle</VerticalAlignment>\
       <TextFitMode>AlwaysFit</TextFitMode>\
@@ -414,7 +420,7 @@
         </Element>\
       </StyledText>\
     </TextObject>\
-    <Bounds X="-300" Y="134.4" Width="1300.8" Height="1219.2"/>\
+    <Bounds X="806.4" Y="134.4" Width="576" Height="1219.2"/>\
   </ObjectInfo>\
   <ObjectInfo>\
     <TextObject>\
@@ -424,7 +430,7 @@
       <LinkedObjectName></LinkedObjectName>\
       <Rotation>Rotation90</Rotation>\
       <IsMirrored>False</IsMirrored>\
-      <IsVariable>False</IsVariable>\
+      <IsVariable>True</IsVariable>\
       <HorizontalAlignment>Left</HorizontalAlignment>\
       <VerticalAlignment>Middle</VerticalAlignment>\
       <TextFitMode>AlwaysFit</TextFitMode>\
@@ -440,7 +446,7 @@
         </Element>\
       </StyledText>\
     </TextObject>\
-    <Bounds X="300" Y="134.4" Width="1300.8" Height="1219.2"/>\
+    <Bounds X="81.6" Y="134.4" Width="576" Height="1219.2"/>\
   </ObjectInfo>\
 </DieCutLabel>';
 
@@ -466,7 +472,7 @@
                 if (printerName == "")
                     throw "No LabelWriter printers found. Install LabelWriter printer";
 
-                label.print(printerName, dymo.label.framework.createLabelWriterPrintParamsXml({copies: 1, printQuality: "Text"}));
+                label.print(printerName, dymo.label.framework.createLabelWriterPrintParamsXml({copies: Math.round(@this.labelQty/2), printQuality: "Text"}));
 
             }
         </script>
