@@ -18,6 +18,8 @@ class AttendeeDetailModal extends Component
     public ?Attendee $attendee;
     public $paymentInfo = [];
 
+    public $labelQty;
+
     protected $listeners = ['setCurrentAttendee'];
 
     public function mount(Attendee $attendee)
@@ -33,6 +35,7 @@ class AttendeeDetailModal extends Component
     public function setCurrentAttendee(Attendee $attendee)
     {
         $this->attendee = $attendee->fresh(['ticket', 'activityLog']);
+        $this->labelQty = 50;
 
         $ticket = $this->attendee->ticket;
 
