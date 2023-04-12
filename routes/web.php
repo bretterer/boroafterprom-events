@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 use App\Models\Ticket;
+use App\Models\Attendee;
+use Illuminate\Http\Request;
 use App\Mail\TicketConfirmationEmail;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,4 +86,10 @@ Route::middleware([
     Route::get('/tickets', function () {
         return view('admin.tickets');
     })->name('tickets');
+});
+
+
+Route::get('/mailable', function () {
+    $attendee = Ticket::where('payment_type', 'cash')->firstOrFail()->attendee;
+    return new App\Mail\CashPaymentReminder($attendee);
 });

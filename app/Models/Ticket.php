@@ -40,4 +40,8 @@ class Ticket extends Model
         return $this->paid_on != null ? $this->paid_on->format('F d, Y') : 'N/A';
     }
 
+    public function getOrderDateAttribute() {
+        return $this->created_at->format('F d, Y');
+    }
+
 }
