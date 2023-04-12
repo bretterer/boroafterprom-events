@@ -14,6 +14,7 @@ use App\Events\LogActivity;
 use App\Events\AttendeeCheckedIn;
 use App\Events\AttendeeCheckedOut;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\TicketConfirmationEmail;
 use Stripe\Exception\InvalidRequestException;
 
 class AttendeeDetailModal extends Component
@@ -102,6 +103,7 @@ class AttendeeDetailModal extends Component
         if($this->attendee->guest) {
             $this->attendee->guest->ticket->paid_on = now();
             $this->attendee->guest->ticket->save();
+            LogActivity::dispatch('Marked as Paid', 'cash', $this->attendee->guest);
         }
 
         LogActivity::dispatch('Marked as Paid', 'cash', $this->attendee);
@@ -115,14 +117,30 @@ class AttendeeDetailModal extends Component
         if($this->attendee->guest) {
             $this->attendee->guest->ticket->paid_on = null;
             $this->attendee->guest->ticket->save();
+            LogActivity::dispatch('Marked as Unpaid', 'cash', $this->attendee->guest);
         }
 
         LogActivity::dispatch('Marked as Unpaid', 'cash', $this->attendee);
     }
 
-    public function resendTicket()
+    public function resendConfirmation()
     {
-        Mail::to($this->attendee->email)->send(new EventTicket($this->attendee));
+        $charge = null;
+
+        if($this->attendee->ticket->payment_type != null && $this->attendee->ticket->payment_type != 'cash') {
+            try{
+                // $stripe = new \Stripe\StripeClient(config('services.stripe.secret_key'));
+                Stripe::setApiKey(config('services.stripe.secret_key'));
+                $charge = Charge::retrieve($this->attendee->ticket->payment_id);
+
+            } catch(InvalidRequestException $ire) {
+
+            } catch(\Exception $e) {
+
+            }
+        }
+
+        Mail::to($this->attendee->email)->send(new TicketConfirmationEmail($this->attendee, $charge));
     }
 
     public function getAttendeeName()

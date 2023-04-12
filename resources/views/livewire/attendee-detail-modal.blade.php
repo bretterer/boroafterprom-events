@@ -80,6 +80,11 @@
                                             <dd class="mt-1 text-sm text-gray-900 flex flex-col">
                                                 <span>{{ $attendee->ticket->datePaid }}</span>
                                                 @if($attendee->ticket->paid_on == null)
+                                                <!-- <button
+                                                    wire:click.prevent="markPaid"
+                                                    class="bg-boro-500 hover:bg-boro-700 text-white font-bold py-2 px-4 rounded">
+                                                    Mark Paid
+                                                </button> -->
                                                 <button
                                                     wire:click.prevent="markPaid"
                                                     class="bg-boro-500 hover:bg-boro-700 text-white font-bold py-2 px-4 rounded">
@@ -87,6 +92,11 @@
                                                 </button>
                                                 @else
                                                 @if($attendee->ticket->payment_type=="cash")
+                                                <!-- <button
+                                                    wire:click.prevent="markUnpaid"
+                                                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                                    Mark Unpaid
+                                                </button> -->
                                                 <button
                                                     wire:click.prevent="markUnpaid"
                                                     class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
@@ -147,9 +157,9 @@
                                             <dd class="mt-1 text-sm text-gray-900 flex flex-col">
                                                 <span></span>
                                                 <button
-                                                    wire:click.prevent="resendTicket"
+                                                    wire:click.prevent="resendConfirmation"
                                                     class="bg-boro-500 hover:bg-boro-700 text-white font-bold py-2 px-4 rounded">
-                                                    Resend Ticket
+                                                    Resend Confirmation Email
                                                 </button>
                                             </dd>
 

@@ -2,14 +2,15 @@
 
 namespace App\Mail;
 
-use App\Models\Attendee;
 use Stripe\Charge;
+use App\Models\Attendee;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class TicketConfirmationEmail extends Mailable
 {
@@ -49,7 +50,10 @@ class TicketConfirmationEmail extends Mailable
     {
         return new Envelope(
             subject: 'Boro Afterprom Tickets',
-            from: 'info@boroafterprom.com',
+            from: new Address(
+                address: 'info@boroafterprom.com',
+                name: 'Springboro Afterprom'
+            )
         );
     }
 
