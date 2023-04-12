@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Exception;
 use App\Models\Ticket;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
@@ -63,9 +64,14 @@ class LabelPickupReminder extends Command
     }
 
     protected function email(Ticket $ticket) {
+
         $this->components->info("Queuing email to: {$ticket->attendee->email}");
 
-        Mail::to($ticket->attendee->email)
-            ->queue(new LabelPickupReminderMailer($ticket->attendee));
+        try {
+            Mail::to($ticket->attendee->email)
+                ->queue(new LabelPickupReminderMailer($ticket->attendee));
+        } catch(Exception $e) {
+            $this->components->info("Exception was caught: {$e->getMessage()}");
+        }
     }
 }
