@@ -53,7 +53,7 @@ You chose to pay with cash, Please bring a screenshot of this and cash with you 
 <h3>Order Details</h3>
 Order Reference: <strong>#{{ explode('-', $attendee->ticket->uuid)[0] }}</strong><br>
 Order Name: <strong>{{$attendee->first_name}} {{$attendee->last_name}}</strong><br>
-Order Date: <strong>{{ $attendee->ticket->datePaid }}</strong><br>
+Order Date: <strong>{{ $attendee->ticket->orderDate }}</strong><br>
 Order Email: <strong>{{$attendee->email}}</strong><br>
 
 
@@ -104,6 +104,13 @@ Payment Date: <strong>{{$attendee->ticket->paid_on->format('F j, Y')}}</strong><
 Payment Type: <strong>{{strtoupper($paymentInfo->payment_method_details->card->brand)}}</strong><br>
 Ending In: <strong>{{$paymentInfo->payment_method_details->card->last4}}</strong><br>
 Transaction ID: <strong>{{$paymentInfo->id}}</strong><br>
+@endif
+
+@if($attendee->ticket->payment_type == "cash" && $attendee->ticket->paid_on != null)
+    <!-- Cash Payment -->
+    <h3 style="margin-bottom: 4px;">Payment Details</h3>
+Payment Date: <strong>{{$attendee->ticket->paid_on->format('F j, Y')}}</strong><br>
+Payment Type: <strong>Cash</strong><br>
 @endif
 <br><br>
 Thank you
