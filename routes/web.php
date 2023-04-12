@@ -5,6 +5,7 @@ use App\Models\Attendee;
 use Illuminate\Http\Request;
 use App\Mail\TicketConfirmationEmail;
 use Illuminate\Support\Facades\Route;
+use App\Mail\TicketReconfirmationEmail;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,6 +91,21 @@ Route::middleware([
 
 
 Route::get('/mailable', function () {
+    $charge = null;
     $attendee = Ticket::where('payment_type', 'cash')->firstOrFail()->attendee;
-    return new App\Mail\CashPaymentReminder($attendee);
+
+    if($attendee->ticket->payment_type != null && $attendee->ticket->payment_type != 'cash') {
+        try{
+            // $stripe = new \Stripe\StripeClient(config('services.stripe.secret_key'));
+            Stripe::setApiKey(config('services.stripe.secret_key'));
+            $charge = Charge::retrieve($attendee->ticket->payment_id);
+
+        } catch(InvalidRequestException $ire) {
+
+        } catch(\Exception $e) {
+
+        }
+    }
+
+    return new TicketReconfirmationEmail($attendee, $charge);
 });
