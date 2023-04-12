@@ -36,7 +36,13 @@ class LabelPickupReminder extends Command
         if ($this->option('ticket')) {
             $tickets = Ticket::where('uuid', 'like', "{$this->option('ticket')}%")->limit($this->option('first'))->get();
         } else {
-            $tickets = Ticket::limit($this->option('first'))->get();
+            $tickets = Ticket::get();
+            $tickets = $tickets->filter(function($ticket) {
+                return !$ticket->attendee->isGuest();
+            })->slice(0,$this->option('first'));
+
+
+
         }
 
         if ($this->option('pretend')) {

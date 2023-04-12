@@ -6,6 +6,7 @@ use App\Models\Ticket;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Database\Eloquent\Builder;
 use App\Mail\CashPaymentReminder as CashPaymentReminderMailer;
 
 class CashPaymentReminder extends Command
@@ -37,6 +38,10 @@ class CashPaymentReminder extends Command
             $tickets = Ticket::where('paid_on', null)->where('payment_type', 'cash')->where('uuid', 'like', "{$this->option('ticket')}%")->get();
         } else {
             $tickets = Ticket::where('paid_on', null)->where('payment_type', 'cash')->get();
+            $tickets = $tickets->filter(function($ticket) {
+                return !$ticket->attendee->isGuest();
+            });
+
         }
 
         if ($tickets->count() == 0) {
