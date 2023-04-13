@@ -210,7 +210,7 @@ class Tickets extends Component
                 !array_key_exists('guest_phone', $this->guestAttendeeData) ||
                 !array_key_exists('guest_parent_email', $this->guestAttendeeData)
             ) {
-                throw AttendeeCreationExeption::for($this->guestAttendeeData, "guest");
+                throw AttendeeCreationExeption::for([$this->primaryAttendeeData, $this->guestAttendeeData], "guest");
             }
 
             $this->guestAttendee = Attendee::create([
