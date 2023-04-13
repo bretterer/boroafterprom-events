@@ -7,10 +7,11 @@
         Livewire.on('closeModal', () => {
             show = false
         })
-        ">
+        "
+    x-cloak>
 
 
-    <div  x-show="show" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div x-show="show" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" x-transition:enter="ease-out duration-300"
             x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
@@ -28,7 +29,9 @@
                     x-transition:leave="ease-in duration-200"
                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    x-show="show">
+                    x-show="show"
+                    @click.away="show = false"
+                    x-on:keydown.escape="window.livewire.emit('closeModal')">
                     <div>
 
 
@@ -44,6 +47,8 @@
                                         <h2 id="attendee-name"
                                             class="text-lg font-medium leading-6 text-gray-900">{{ $attendee->first_name }} {{ $attendee->last_name }}</h2>
                                         <p class="mt-1 max-w-2xl text-sm text-gray-500">{{ $attendee->email }}</p>
+                                        <p class="mt-1 max-w-2xl text-sm text-gray-500">#{{ explode('-', $attendee->ticket->uuid)[0] }}</p>
+                                        <p class="mt-1 max-w-2xl text-sm text-gray-500">{{ $attendee->phone }}</p>
                                     </div>
                                     <div class="mr-4">
                                         <button @click="show=false" class="bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded-full">
