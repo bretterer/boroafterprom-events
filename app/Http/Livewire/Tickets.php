@@ -149,9 +149,9 @@ class Tickets extends Component
             $this->primaryAttendeeData = $this->validate([
                 'first_name' => 'required',
                 'last_name' => 'required',
-                'email' => 'required|email',
+                'email' => 'required|email:rfc,dns,spoof',
                 'phone' => 'required|digits:10',
-                'parent_email' => 'required|email',
+                'parent_email' => 'required|email:rfc,dns,spoof',
                 'confirmation' => 'required',
             ]);
 
@@ -159,8 +159,8 @@ class Tickets extends Component
                 $this->guestAttendeeData = $this->validate([
                     'guest_first_name' => 'required',
                     'guest_last_name' => 'required',
-                    'guest_email' => 'nullable|email',
-                    'guest_parent_email' => 'required|email',
+                    'guest_email' => 'nullable|email:rfc,dns,spoof',
+                    'guest_parent_email' => 'required|email:rfc,dns,spoof',
                     'guest_phone' => 'required|digits:10',
                 ]);
             }
@@ -200,7 +200,9 @@ class Tickets extends Component
         ]));
 
         if ($this->hasGuest) {
-
+            if($this->guestAttendeeData == null) {
+                $this->validateInput();
+            }
             if(
                 $this->guestAttendeeData == null ||
                 !array_key_exists('guest_first_name', $this->guestAttendeeData) ||
