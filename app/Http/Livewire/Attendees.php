@@ -3,8 +3,9 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use Livewire\WithPagination;
 use App\Models\Attendee;
+use Livewire\WithPagination;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ItemNotFoundException;
 
 
@@ -29,6 +30,9 @@ class Attendees extends Component
     {
         $attendees = Attendee::where('first_name', 'like', $this->search.'%')
             ->orWhere('last_name', 'like', $this->search.'%')
+            ->orWhereHas('ticket', function(Builder $query) {
+                $query->where('uuid', 'like', $this->search.'%');
+            })
             ->orderBy('first_name');
 
         return view('livewire.attendees', [
