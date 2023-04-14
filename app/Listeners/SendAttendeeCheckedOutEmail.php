@@ -31,8 +31,8 @@ class SendAttendeeCheckedOutEmail
      */
     public function handle(AttendeeCheckedOut $event)
     {
-        Mail::to($event->attendee->parent_email)->send(new AttendeeCheckedOutMail($event->attendee));
+        $test = Mail::to($event->attendee->parent_email)->later(now()->addMinutes(2), new AttendeeCheckedOutMail($event->attendee));
         LogActivity::dispatch("Check Out Email Sent to {$event->attendee->parent_email}", 'email', $event->attendee);
-        Log::debug('Check Out Attendee ' . $event->attendee->phone);
+        Log::debug('Check Out Attendee ' . $event->attendee->email, ['queue' => $test]);
     }
 }
