@@ -257,7 +257,7 @@
                                                                 </div>
                                                                 <div
                                                                     class="whitespace-nowrap text-right text-sm text-gray-500">
-                                                                    <time datetime="2020-09-20">{{$log->created_at->format('M d')}}</time>
+                                                                    <time datetime="2020-09-20">{{$log->entryDate}}</time>
                                                                 </div>
                                                             </div>
                                                         </div>

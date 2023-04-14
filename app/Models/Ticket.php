@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuids;
+use Carbon\CarbonTimeZone;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Ticket extends Model
 {
@@ -33,11 +34,11 @@ class Ticket extends Model
     }
 
     public function getDatePickedUpAttribute() {
-        return $this->picked_up!= null ? $this->picked_up->format('F d, Y') : 'N/A';
+        return $this->picked_up!= null ? $this->picked_up->setTimezone(new CarbonTimeZone('America/New_York'))->format('F d, Y') : 'N/A';
     }
 
     public function getDatePaidAttribute() {
-        return $this->paid_on != null ? $this->paid_on->format('F d, Y') : 'N/A';
+        return $this->paid_on != null ? $this->paid_on->setTimezone(new CarbonTimeZone('America/New_York'))->format('F d, Y') : 'N/A';
     }
 
     public function getOrderDateAttribute() {

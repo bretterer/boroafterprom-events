@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Activity;
+use Carbon\CarbonTimeZone;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -59,11 +60,11 @@ class Attendee extends Model
     }
 
     public function getDateCheckedInAttribute() {
-        return $this->checked_in != NULL ? $this->checked_in->format('F d, Y h:i:s A') : 'N/A';
+        return $this->checked_in != NULL ? $this->checked_in->setTimezone(new CarbonTimeZone('America/New_York'))->format('F d, Y g:i A') : 'N/A';
     }
 
     public function getDateCheckedOutAttribute() {
-        return $this->checked_out != NULL ? $this->checked_out->format('F d, Y h:i:s A') : 'N/A';
+        return $this->checked_out != NULL ? $this->checked_out->setTimezone(new CarbonTimeZone('America/New_York'))->format('F d, Y g:i A') : 'N/A';
     }
 
     public function getGuestNameAttribute() {

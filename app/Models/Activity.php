@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Attendee;
+use Carbon\CarbonTimeZone;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -18,6 +19,11 @@ class Activity extends Model
 
     public function attendee() {
         return $this->belongsTo(Attendee::class);
+    }
+
+    public function getEntryDateAttribute()
+    {
+        return $this->created_at->setTimezone(new CarbonTimeZone('America/New_York'))->format('n/j/o g:i A');
     }
 
     public function icon_phone() {

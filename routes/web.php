@@ -2,8 +2,10 @@
 
 use App\Models\Ticket;
 use App\Models\Attendee;
+use Carbon\CarbonTimeZone;
 use Illuminate\Http\Request;
 use App\Mail\TicketConfirmationEmail;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
 use App\Mail\TicketReconfirmationEmail;
 
@@ -23,10 +25,19 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function(Request $request) {
+
+    $attendee = Attendee::get(48);
     $ticketId = $request->get('ticketId');
+
     $chargeInfo = null;
 
     $ticket = Ticket::with('attendee')->where('uuid', 'like', $ticketId . '-%')->firstOrFail();
+
+
+
+
+
+
 
     if($ticket->payment_id != null) {
         $stripe = new \Stripe\StripeClient(config('services.stripe.secret_key'));
