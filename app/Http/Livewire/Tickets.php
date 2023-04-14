@@ -150,7 +150,7 @@ class Tickets extends Component
                 'first_name' => 'required',
                 'last_name' => 'required',
                 'email' => 'required|email:rfc,dns,spoof',
-                'phone' => 'required|digits:10',
+                'phone' => 'required|regex:/^([0-9\s\-\+\.\(\)]*)$/|min:10',
                 'parent_email' => 'required|email:rfc,dns,spoof',
                 'confirmation' => 'required',
             ]);
@@ -161,7 +161,7 @@ class Tickets extends Component
                     'guest_last_name' => 'required',
                     'guest_email' => 'nullable|email:rfc,dns,spoof',
                     'guest_parent_email' => 'required|email:rfc,dns,spoof',
-                    'guest_phone' => 'required|digits:10',
+                    'guest_phone' => 'required|regex:/^([0-9\s\-\+\.\(\)]*)$/|min:10',
                 ]);
             }
         } catch (\Exception $exception) {
