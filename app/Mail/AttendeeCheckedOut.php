@@ -35,11 +35,11 @@ class AttendeeCheckedOut extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Your student checked out at Springboro Afterprom',
+            subject: 'Boro Afterprom - Student Checked Out',
             from: new Address(
-                'info@boroafterprom.com',
-                'Springboro Afterprom'
-            ),
+                address: 'info@boroafterprom.com',
+                name: 'Springboro Afterprom'
+            )
         );
     }
 
@@ -51,7 +51,7 @@ class AttendeeCheckedOut extends Mailable
     public function content()
     {
         return new Content(
-            htmlString: "<p>This email is to inform you that your student, {$this->attendee->first_name} {$this->attendee->last_name}, has checked out of Springboro Afterprom.</p>",
+            view: 'emails.checked-out'
         );
     }
 
