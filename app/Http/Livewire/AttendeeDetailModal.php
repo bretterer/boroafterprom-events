@@ -73,25 +73,39 @@ class AttendeeDetailModal extends Component
 
     public function checkIn()
     {
-        $this->attendee->checked_in = now();
-        $this->attendee->save();
+        if($this->attendee->checked_in != null) {
+            $this->attendee->checked_in = null;
+            $this->attendee->save();
+            LogActivity::dispatch('Cleared Checked In', 'check', $this->attendee);
+        } else {
+            $this->attendee->checked_in = now();
+            $this->attendee->save();
+            LogActivity::dispatch('Checked In', 'check', $this->attendee);
+            AttendeeCheckedIn::dispatch($this->attendee);
+        }
 
         $this->attendee = $this->attendee->fresh(['ticket', 'activityLog']);
 
-        LogActivity::dispatch('Checked In', 'check', $this->attendee);
-        AttendeeCheckedIn::dispatch($this->attendee);
+        $this->emit('updateStats');
 
     }
 
     public function checkOut()
     {
-        $this->attendee->checked_out = now();
-        $this->attendee->save();
+        if($this->attendee->checked_out != null) {
+            $this->attendee->checked_out = null;
+            $this->attendee->save();
+            LogActivity::dispatch('Cleared Checked Out', 'checkRed', $this->attendee);
+        } else {
+            $this->attendee->checked_out = now();
+            $this->attendee->save();
+            LogActivity::dispatch('Checked Out', 'checkRed', $this->attendee);
+            AttendeeCheckedOut::dispatch($this->attendee);
+        }
 
         $this->attendee = $this->attendee->fresh(['ticket', 'activityLog']);
 
-        LogActivity::dispatch('Checked Out', 'checkRed', $this->attendee);
-        AttendeeCheckedOut::dispatch($this->attendee);
+        $this->emit('updateStats');
 
     }
 
