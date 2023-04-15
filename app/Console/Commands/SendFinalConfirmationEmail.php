@@ -18,6 +18,7 @@ class SendFinalConfirmationEmail extends Command
      */
     protected $signature = 'emails:final-confirmation-email
                                 {--ticket= : Send only to ticket based on reference number}
+                                {--after= : Send only after an email has been found}
                                 {--pretend : Display the number of records and list of emails that will be sent}';
 
 
@@ -28,6 +29,7 @@ class SendFinalConfirmationEmail extends Command
      */
     protected $description = 'Send the final confirmation email with ticket links';
 
+    protected $andGo = false;
     /**
      * Execute the console command.
      *
@@ -43,7 +45,21 @@ class SendFinalConfirmationEmail extends Command
                 if(!$attendee->primary ) {
                     return $attendee;
                 }
-            });;
+            });
+
+            if($this->option('after')) {
+
+                $this->andGo = false;
+                $attendees = $attendees->filter(function($attendee) {
+                    if($this->andGo == true) {
+                        return $attendee;
+                    }
+
+                    if($this->andGo == false && $attendee->email == $this->option('after')) {
+                        $this->andGo = true;
+                    }
+                });
+            }
         }
 
         if ($attendees->count() == 0) {
