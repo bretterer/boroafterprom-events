@@ -63,6 +63,8 @@
 
 <p>Dear {{$attendee->first_name}} {{$attendee->last_name}},</p>
 
+<p>Things you should know before coming to Boro Afterprom.</p>
+
 <p><strong>When should I show up?</strong><br/>
 The doors will open at 11:00PM. You will not be admitted prior to 11:00PM. The event ends around 3:00AM</p>
 
