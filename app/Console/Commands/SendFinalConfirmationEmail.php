@@ -78,7 +78,7 @@ class SendFinalConfirmationEmail extends Command
 
         try {
             Mail::to($attendee->email)
-                ->queue(new FinalConfirmationEmail($attendee));
+                ->send(new FinalConfirmationEmail($attendee));
         } catch(Exception $e) {
             $this->components->info("Exception was caught: {$e->getMessage()}");
         }
