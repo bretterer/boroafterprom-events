@@ -73,7 +73,12 @@ class CashPaymentReminder extends Command
     protected function email(Ticket $ticket) {
         $this->components->info("Queuing email to: {$ticket->attendee->email}");
 
-        Mail::to($ticket->attendee->email)
-            ->queue(new CashPaymentReminderMailer($ticket->attendee));
+        try {
+            Mail::to($ticket->attendee->email)
+                ->queue(new CashPaymentReminderMailer($ticket->attendee));
+        } catch(Exception $e) {
+            $this->components->info("Exception was caught: {$e->getMessage()}");
+        }
+
     }
 }

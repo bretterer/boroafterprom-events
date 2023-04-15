@@ -83,8 +83,12 @@ class Reconfirmation extends Command
 
             }
         }
+        try {
+            Mail::to($ticket->attendee->email)
+                ->queue(new TicketReconfirmationEmail($ticket->attendee, $charge));
+        } catch(Exception $e) {
+            $this->components->info("Exception was caught: {$e->getMessage()}");
+        }
 
-        Mail::to($ticket->attendee->email)
-            ->queue(new TicketReconfirmationEmail($ticket->attendee, $charge));
     }
 }

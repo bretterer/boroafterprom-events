@@ -77,8 +77,13 @@ class NotCheckedInEmail extends Command
     protected function email(Attendee $attendee) {
         $this->components->info("Queuing email to: {$attendee->parent_email}");
 
-        Mail::to($attendee->parent_email)
-            ->queue(new NotCheckedIn($attendee));
+        try {
+            Mail::to($attendee->parent_email)
+                ->queue(new NotCheckedIn($attendee));
+        } catch(Exception $e) {
+            $this->components->info("Exception was caught: {$e->getMessage()}");
+        }
+
 
     }
 }
