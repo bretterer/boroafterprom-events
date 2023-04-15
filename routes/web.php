@@ -4,6 +4,7 @@ use App\Models\Ticket;
 use App\Models\Attendee;
 use Carbon\CarbonTimeZone;
 use Illuminate\Http\Request;
+use App\Mail\FinalConfirmationEmail;
 use App\Mail\TicketConfirmationEmail;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +25,17 @@ Route::get('/', function () {
     return redirect('https://boroafterprom.com');
 });
 
+Route::get('/showTicket/{ticketUuid}', function(string $ticketUuid) {
+    $ticket = Ticket::with('attendee')->where('uuid', $ticketUuid)->firstOrFail();
+    $attendee = $ticket->attendee;
+    return view('tickets.ticket', ['attendee'=>$attendee]);
+})->name('printTicket');
+
 Route::get('/test', function(Request $request) {
+
+    Mail::to('brian@boroafterprom.com')->send(new FinalConfirmationEmail(Attendee::firstOrFail()));
+
+    return view('tickets.ticket', ['attendee'=>Attendee::firstOrFail()]);
 
     $attendee = Attendee::get(48);
     $ticketId = $request->get('ticketId');
@@ -102,21 +113,8 @@ Route::middleware([
 
 
 Route::get('/mailable', function () {
-    $charge = null;
-    $attendee = Ticket::where('payment_type', 'cash')->firstOrFail()->attendee;
-
-    if($attendee->ticket->payment_type != null && $attendee->ticket->payment_type != 'cash') {
-        try{
-            // $stripe = new \Stripe\StripeClient(config('services.stripe.secret_key'));
-            Stripe::setApiKey(config('services.stripe.secret_key'));
-            $charge = Charge::retrieve($attendee->ticket->payment_id);
-
-        } catch(InvalidRequestException $ire) {
-
-        } catch(\Exception $e) {
-
-        }
-    }
-
-    return new TicketReconfirmationEmail($attendee, $charge);
+    $attendee = Ticket::where('uuid', 'a6d896f8-89ad-4b5b-b364-0ced1f8fa757')->firstOrFail()->attendee;
+    // Mail::to($attendee->email)->send(new FinalConfirmationEmail($attendee));
+    return new FinalConfirmationEmail($attendee);
 });
+
