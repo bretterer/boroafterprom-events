@@ -31,55 +31,57 @@ Route::get('/showTicket/{ticketUuid}', function(string $ticketUuid) {
     return view('tickets.ticket', ['attendee'=>$attendee]);
 })->name('printTicket');
 
-Route::get('/test', function(Request $request) {
+// Route::get('/test', function(Request $request) {
 
-    Mail::to('brian@boroafterprom.com')->send(new FinalConfirmationEmail(Attendee::firstOrFail()));
+//     Mail::to('brian@boroafterprom.com')->send(new FinalConfirmationEmail(Attendee::firstOrFail()));
 
-    return view('tickets.ticket', ['attendee'=>Attendee::firstOrFail()]);
+//     return view('tickets.ticket', ['attendee'=>Attendee::firstOrFail()]);
 
-    $attendee = Attendee::get(48);
-    $ticketId = $request->get('ticketId');
+//     $attendee = Attendee::get(48);
+//     $ticketId = $request->get('ticketId');
 
-    $chargeInfo = null;
+//     $chargeInfo = null;
 
-    $ticket = Ticket::with('attendee')->where('uuid', 'like', $ticketId . '-%')->firstOrFail();
-
-
+//     $ticket = Ticket::with('attendee')->where('uuid', 'like', $ticketId . '-%')->firstOrFail();
 
 
 
 
 
-    if($ticket->payment_id != null) {
-        $stripe = new \Stripe\StripeClient(config('services.stripe.secret_key'));
 
-        $chargeInfo = $stripe->charges->retrieve($ticket->payment_id);
-    }
-    if($request->get('sendTicket')){
-        Mail::to('bretterer@gmail.com')->send(new TicketConfirmationEmail($ticket->attendee, $chargeInfo));
-    }
-    return new App\Mail\TicketConfirmationEmail($ticket->attendee, $chargeInfo);
-});
+
+//     if($ticket->payment_id != null) {
+//         $stripe = new \Stripe\StripeClient(config('services.stripe.secret_key'));
+
+//         $chargeInfo = $stripe->charges->retrieve($ticket->payment_id);
+//     }
+//     if($request->get('sendTicket')){
+//         Mail::to('bretterer@gmail.com')->send(new TicketConfirmationEmail($ticket->attendee, $chargeInfo));
+//     }
+//     return new App\Mail\TicketConfirmationEmail($ticket->attendee, $chargeInfo);
+// });
 
 Route::get('/tickets', function () {
-    return view('tickets');
+    return redirect('https://boroafterprom.com');
+    // return view('tickets');
 });
 
 Route::get('/tickets/success', function (Request $request) {
-    $ticketId = $request->get('ticketId');
-    $chargeInfo = null;
+    return redirect('https://boroafterprom.com');
+    // $ticketId = $request->get('ticketId');
+    // $chargeInfo = null;
 
-    $ticket = Ticket::with('attendee')->where('uuid', 'like', $ticketId . '-%')->firstOrFail();
+    // $ticket = Ticket::with('attendee')->where('uuid', 'like', $ticketId . '-%')->firstOrFail();
 
-    if($ticket->payment_id != null) {
-        $stripe = new \Stripe\StripeClient(config('services.stripe.secret_key'));
+    // if($ticket->payment_id != null) {
+    //     $stripe = new \Stripe\StripeClient(config('services.stripe.secret_key'));
 
-        $chargeInfo = $stripe->charges->retrieve($ticket->payment_id);
-    }
-    if($request->get('sendTicket')){
-        Mail::to($ticket->attendee->email)->send(new TicketConfirmationEmail($ticket->attendee, $chargeInfo));
-    }
-    return view('tickets.success', ['attendee' => $ticket->attendee, 'paymentInfo' => $chargeInfo]);
+    //     $chargeInfo = $stripe->charges->retrieve($ticket->payment_id);
+    // }
+    // if($request->get('sendTicket')){
+    //     Mail::to($ticket->attendee->email)->send(new TicketConfirmationEmail($ticket->attendee, $chargeInfo));
+    // }
+    // return view('tickets.success', ['attendee' => $ticket->attendee, 'paymentInfo' => $chargeInfo]);
 
 
 })->name('tickets.success');
@@ -112,9 +114,9 @@ Route::middleware([
 });
 
 
-Route::get('/mailable', function () {
-    $attendee = Ticket::where('uuid', 'a6d896f8-89ad-4b5b-b364-0ced1f8fa757')->firstOrFail()->attendee;
-    // Mail::to($attendee->email)->send(new FinalConfirmationEmail($attendee));
-    return new FinalConfirmationEmail($attendee);
-});
+// Route::get('/mailable', function () {
+//     $attendee = Ticket::where('uuid', 'a6d896f8-89ad-4b5b-b364-0ced1f8fa757')->firstOrFail()->attendee;
+//     // Mail::to($attendee->email)->send(new FinalConfirmationEmail($attendee));
+//     return new FinalConfirmationEmail($attendee);
+// });
 
