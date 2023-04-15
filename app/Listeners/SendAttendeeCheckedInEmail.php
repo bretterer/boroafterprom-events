@@ -31,7 +31,7 @@ class SendAttendeeCheckedInEmail
      */
     public function handle(AttendeeCheckedIn $event)
     {
-        Mail::to($event->attendee->parent_email)->later(now()->addMinutes(2), new AttendeeCheckedInMail($event->attendee));
+        Mail::to($event->attendee->parent_email)->later(now()->addSeconds(1), new AttendeeCheckedInMail($event->attendee));
         LogActivity::dispatch("Check In Email Sent to {$event->attendee->parent_email}", 'email', $event->attendee);
         Log::debug('Check In Attendee ' . $event->attendee->phone);
     }

@@ -63,7 +63,7 @@
 
 <p>Hello,</p>
 
-<p>This email is to inform you that your student, {{$attendee->first_name}} {{ $attendee->last_name}} has checked into our event at {{$attendee->checked_in->format('g:i a')}}.</p>
+<p>This email is to inform you that your student, {{$attendee->first_name}} {{ $attendee->last_name}} has checked into our event at {{$attendee->dateCheckedIn}}.</p>
 
 <p>If you student leaves early from afterprom, we will make you aware via another email.</p>
 
