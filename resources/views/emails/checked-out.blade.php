@@ -63,7 +63,7 @@
 
 <p>Hello,</p>
 
-<p>This email is to inform you that your student, {{$attendee->first_name}} {{ $attendee->last_name}} has checked out of our event.</p>
+<p>This email is to inform you that your student, {{$attendee->first_name}} {{ $attendee->last_name}} has checked out of our event at {{$attendee->dateCheckedOut}}.</p>
 
 <p>Thank you,<br/>
 Springboro Afterprom</p>
