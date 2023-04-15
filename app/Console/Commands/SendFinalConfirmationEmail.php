@@ -76,8 +76,13 @@ class SendFinalConfirmationEmail extends Command
     protected function email(Attendee $attendee) {
         $this->components->info("Queuing email to: {$attendee->email}");
 
-        Mail::to($attendee->email)
-            ->queue(new FinalConfirmationEmail($attendee));
+        try {
+            Mail::to($attendee->email)
+                ->queue(new FinalConfirmationEmail($attendee));
+        } catch(Exception $e) {
+            $this->components->info("Exception was caught: {$e->getMessage()}");
+        }
+
 
     }
 }
