@@ -41,7 +41,7 @@ class FinalConfirmationEmail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Boro Afterprom - Ticket Confirmation',
+            subject: 'Boro Afterprom - Ticket Confirmation and Info',
             from: new Address(
                 address: 'info@boroafterprom.com',
                 name: 'Springboro Afterprom'
