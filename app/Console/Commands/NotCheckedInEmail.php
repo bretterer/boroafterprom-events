@@ -18,6 +18,7 @@ class NotCheckedInEmail extends Command
      * @var string
      */
     protected $signature = 'emails:not-checked-in
+                                {--after= : Send only after an email has been found}
                                 {--ticket= : Send only to ticket based on reference number}
                                 {--pretend : Display the number of records and list of emails that will be sent}';
 
@@ -28,6 +29,9 @@ class NotCheckedInEmail extends Command
      * @var string
      */
     protected $description = 'Send an email to parents that student has not checked in';
+
+
+    protected $andGo = false;
 
     /**
      * Execute the console command.
@@ -46,6 +50,20 @@ class NotCheckedInEmail extends Command
                 }
             });;
         }
+
+        if($this->option('after')) {
+
+                $this->andGo = false;
+                $attendees = $attendees->filter(function($attendee) {
+                    if($this->andGo == true) {
+                        return $attendee;
+                    }
+
+                    if($this->andGo == false && $attendee->email == $this->option('after')) {
+                        $this->andGo = true;
+                    }
+                });
+            }
 
         if ($attendees->count() == 0) {
             $this->components->info("No attendees will be emailed.");
